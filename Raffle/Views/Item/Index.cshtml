@@ -1,0 +1,34 @@
+﻿@using Raffle.Models
+@model Item
+@{
+    ViewBag.Title = Model.Name;
+    int possibleRaffles = (int)(Model.Price / Model.RafflePrice);
+    int availableRaffles = possibleRaffles - Model.Raffles.Count;
+}
+
+<h2>@Model.Name</h2>
+<h3>@Model.Owner.UserName</h3>
+
+@foreach (Raffle raffle in Model.Raffles)
+{
+    <div>
+        @raffle.RaffleNumber
+    </div>
+}
+
+@if (availableRaffles > 0)
+{
+    using (Html.BeginForm())
+    {        
+    <div>
+        There are still <strong>@availableRaffles</strong> raffles
+    </div>
+    
+    <input type="number" min="1" max="@availableRaffles" step="1" name="raffleNumber"/>
+    <input type="submit" value="Buy" />
+    }
+}
+else
+{
+    <h1>This item is out of raffles</h1>
+}
