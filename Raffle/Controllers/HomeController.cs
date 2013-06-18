@@ -23,12 +23,14 @@ namespace Raffle.Controllers
                                              .AsQueryable();
 
             ViewBag.LastPurchases = user.Raffles.OrderByDescending(r => r.PurchasedAt)
-                                                .Take(2)
+                                                .Take(5)
                                                 .AsQueryable();
 
             ViewBag.MyItems = user.Items.OrderByDescending(i => i.CreatedAt)
-                                        .Take(2)
+                                        .Take(5)
                                         .AsQueryable();
+
+            ViewBag.User = context.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
             return View("Dashboard", user);
         }

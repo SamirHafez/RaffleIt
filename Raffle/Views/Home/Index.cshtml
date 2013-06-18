@@ -1,1 +1,10 @@
-﻿
+﻿@*<h2>Close call
+        <small>Almost raffled</small>
+</h2>
+
+<ul class="thumbnails">
+    @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.CloseCall)
+    {
+        Html.RenderPartial("_ItemPreviewPartial", item);
+    }
+</ul>*@

@@ -1,0 +1,43 @@
+﻿@model Raffle.Models.Item
+@{
+    decimal rafflePercentage = (Model.Raffles.Count * 100) / Model.TotalRaffleCount;
+    int rafflesLeft = Model.TotalRaffleCount - Model.Raffles.Count;
+    var user = ((Raffle.Models.UserProfile)ViewBag.User);
+}
+
+<li class="span2">
+    <div class="thumbnail">
+        <img src="http://placehold.it/260x180" alt="" />
+        <div class="caption">
+            <h5>@Model.Name</h5>
+            <p>@Model.Description</p>
+            <div class="progress">
+                <span class="bar" style="width: @(rafflePercentage)%"></span>
+            </div>
+            @if (rafflesLeft == 0)
+            {
+                if (Model.Raffles.Any(r => r.IsPrized.GetValueOrDefault() && r.UserProfileId == user.UserId))
+                {
+                <div class="alert alert-success">
+                    <strong>Prized raffle!</strong>
+                </div>
+                }
+                else
+                { 
+                <h5>item raffled</h5>
+                }
+            }
+            else
+            { 
+                <h5>
+                    <span class="badge badge-info">@rafflesLeft</span> @if (rafflesLeft != 1)
+                                                                       {<span>raffles</span>}
+                                                                       else
+                                                                       {<span>raffle</span>} left
+                </h5>
+            }
+            <h3 class="pull-right"><strong>@(Model.RafflePrice) €</strong></h3>
+            @Html.ActionLink("View", "Index", "Item", new { id = Model.Id }, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+</li>

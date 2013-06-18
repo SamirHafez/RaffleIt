@@ -17,12 +17,15 @@ namespace Raffle.Controllers
         //
         // GET: /Item/
 
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? id, int skip = 0)
         {
-            if (!id.HasValue)
-                return View("List", db.Items.ToList());
-
             ViewBag.User = db.UserProfiles.First(u => u.UserName == User.Identity.Name);
+
+            if (!id.HasValue)
+                return View("List", db.Items.OrderByDescending(i => i.CreatedAt)
+                                            .Skip(skip)
+                                            .Take(20)
+                                            .AsQueryable());
 
             return View(db.Items.Find(id));
         }
