@@ -11,22 +11,19 @@
     <ul class="nav nav-pills">
         <li>
             @Html.ActionLink(User.Identity.Name, "Manage", "Account")
-                <span class="badge badge-info">@user.Money €</span>
-                <span class="badge badge-info">@user.Reputation</span>
-        </li>
-        <li>
-            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-            {
-                @Html.AntiForgeryToken()
-                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
-            }
+            <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+            <span class="badge badge-info">@user.Money €</span>
+            <span class="badge badge-info">@user.Reputation</span>
         </li>
     </ul>
+    
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        @Html.AntiForgeryToken();
+    }
 }
 else
 {
-    <ul class="nav nav-pills">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+    <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
 }
