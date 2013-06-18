@@ -14,11 +14,17 @@ namespace Raffle.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
+
+        [Required]
         public string UserName { get; set; }
 
-        public int Points { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
 
-        public int Feedback { get; set; }
+        public decimal Money { get; set; }
+
+        public int Reputation { get; set; }
 
         public ICollection<Raffle> Raffles { get; set; }
 

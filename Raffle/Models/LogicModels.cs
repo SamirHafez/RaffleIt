@@ -26,8 +26,7 @@ namespace Raffle.Models
         public int Price { get; set; }
 
         [Required]
-        [DataType(DataType.Currency)]
-        public int RafflePrice { get; set; }
+        public int TotalRafleCount { get; set; }
 
         [ForeignKey("Owner")]
         public int OwnerId { get; set; }

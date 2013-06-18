@@ -79,7 +79,7 @@ namespace Raffle.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { Points = 0, Feedback = 0 });
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { Money = 0, Reputation = 0 });
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
