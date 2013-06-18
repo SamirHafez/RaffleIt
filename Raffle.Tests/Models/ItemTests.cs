@@ -1,7 +1,6 @@
 ﻿using Raffle.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,7 +10,7 @@ using Xunit.Extensions;
 
 namespace Raffle.Tests.Models
 {
-    public class Account
+    public class ItemTests
     {
         public class Creation
         {
@@ -23,7 +22,7 @@ namespace Raffle.Tests.Models
             }
 
             [Fact, AutoRollback]
-            public void ShouldCreateAnAccount()
+            public void ShouldCreateAnItem()
             {
                 using (var context = new Context())
                 {
@@ -37,13 +36,23 @@ namespace Raffle.Tests.Models
 
                     context.SaveChanges();
 
-                    Assert.True(account.UserId > 0);
+                    var item = new Item
+                    {
+                        Name = "p1",
+                        Description = "p1 description",
+                        Price = 100,
+                        TotalRaffleCount = 100,
+                        OwnerId = account.UserId
+                    };
 
-                    Assert.True(account.Items.Count == 0);
-                    Assert.True(account.Raffles.Count == 0);
+                    account.Items.Add(item);
 
-                    Assert.True(account.Money == 0);
-                    Assert.True(account.Reputation == 0);
+                    context.SaveChanges();
+
+                    Assert.True(item.Id > 0);
+                    Assert.Equal(100, item.Price);
+                    Assert.Equal(100, item.TotalRaffleCount);
+                    Assert.Equal(account.UserId, item.OwnerId);
                 }
             }
         }

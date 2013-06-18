@@ -50,7 +50,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Account.cs" />
+    <Compile Include="Core\ItemManagerTests.cs" />
+    <Compile Include="Models\UserAccountTests.cs" />
+    <Compile Include="Models\ItemTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

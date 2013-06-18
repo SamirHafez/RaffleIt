@@ -26,7 +26,7 @@ namespace Raffle.Models
         public int Price { get; set; }
 
         [Required]
-        public int TotalRafleCount { get; set; }
+        public int TotalRaffleCount { get; set; }
 
         [ForeignKey("Owner")]
         public int OwnerId { get; set; }
@@ -34,6 +34,16 @@ namespace Raffle.Models
         public virtual UserProfile Owner { get; set; }
 
         public virtual ICollection<Raffle> Raffles { get; set; }
+
+        public bool CanBuy
+        {
+            get { return Raffles.Count != TotalRaffleCount; }
+        }
+
+        public decimal RafflePrice
+        {
+            get { return decimal.Round(Price / TotalRaffleCount, 2); }
+        }
 
         public Item()
         {
@@ -51,6 +61,8 @@ namespace Raffle.Models
         public int ItemId { get; set; }
 
         public int RaffleNumber { get; set; }
+
+        public bool? IsPrized { get; set; }
 
         public virtual UserProfile UserProfile { get; set; }
 
