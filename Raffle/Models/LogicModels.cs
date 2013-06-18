@@ -26,7 +26,12 @@ namespace Raffle.Models
         public int Price { get; set; }
 
         [Required]
+        [Display(Name = "Number of Raffles")]
         public int TotalRaffleCount { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? ClosedAt { get; set; }
 
         [ForeignKey("Owner")]
         public int OwnerId { get; set; }
@@ -63,6 +68,8 @@ namespace Raffle.Models
         public int RaffleNumber { get; set; }
 
         public bool? IsPrized { get; set; }
+
+        public DateTime PurchasedAt { get; set; }
 
         public virtual UserProfile UserProfile { get; set; }
 

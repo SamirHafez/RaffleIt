@@ -18,17 +18,13 @@ namespace Raffle.Models
         [Required]
         public string UserName { get; set; }
 
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-
         public decimal Money { get; set; }
 
         public int Reputation { get; set; }
 
-        public ICollection<Raffle> Raffles { get; set; }
+        public virtual ICollection<Raffle> Raffles { get; set; }
 
-        public ICollection<Item> Items { get; set; }
+        public virtual ICollection<Item> Items { get; set; }
 
         public UserProfile()
         {

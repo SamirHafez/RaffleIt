@@ -1,16 +1,17 @@
 ﻿@model Raffle.Models.Item
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Sell Item";
 }
 
-<h2>Create</h2>
+<h2>sell item</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Item</legend>
+        <legend>General</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)
@@ -37,22 +38,18 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.RafflePrice)
+            @Html.LabelFor(model => model.TotalRaffleCount)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.RafflePrice)
-            @Html.ValidationMessageFor(model => model.RafflePrice)
+            @Html.DropDownListFor(model => model.TotalRaffleCount, new [] { string.Empty, "5", "10", "20", "30", "40", "50" }.Select(i => new SelectListItem { Text = i, Value = i }))
+            @Html.ValidationMessageFor(model => model.TotalRaffleCount)
         </div>
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" class="btn btn-primary btn-large" value="Sell" />
         </p>
     </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

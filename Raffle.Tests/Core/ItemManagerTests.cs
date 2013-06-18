@@ -24,14 +24,12 @@ namespace Raffle.Tests.Core
                 {
                     UserId = 1,
                     UserName = "user",
-                    Email = "user@raffle.com"
                 };
 
                 buyer = new UserProfile
                 {
                     UserId = 2,
                     UserName = "buyer",
-                    Email = "buyer@raffle.com"
                 };
 
                 item = new Item

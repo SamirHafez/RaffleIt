@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Raffle.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,9 +11,26 @@ namespace Raffle.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            var context = new Context();
+            UserProfile user = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
 
-            return View();
+            if (user == null)
+                return View();
+
+            ViewBag.CloseCall = context.Items.Where(i => i.TotalRaffleCount - i.Raffles.Count != 0 && i.OwnerId != user.UserId)
+                                             .OrderBy(i => i.TotalRaffleCount - i.Raffles.Count)
+                                             .Take(5)
+                                             .AsQueryable();
+
+            ViewBag.LastPurchases = user.Raffles.OrderByDescending(r => r.PurchasedAt)
+                                                .Take(2)
+                                                .AsQueryable();
+
+            ViewBag.MyItems = user.Items.OrderByDescending(i => i.CreatedAt)
+                                        .Take(2)
+                                        .AsQueryable();
+
+            return View("Dashboard", user);
         }
 
         public ActionResult About()

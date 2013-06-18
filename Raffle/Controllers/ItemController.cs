@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Raffle.Models;
+using Raffle.Core;
 
 namespace Raffle.Controllers
 {
@@ -25,37 +26,26 @@ namespace Raffle.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(int id, Raffle.Models.Raffle raffle)
+        public ActionResult Index(int id)
         {
             Item item = db.Items.Find(id);
             UserProfile user = db.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
-            if (user.UserId == item.OwnerId)
-                ModelState.AddModelError("raffleNumber", "You cannot buy raffles of your own items");
+            if(!ModelState.IsValid)
+                return RedirectToAction("Index", id);
 
-            if (!ModelState.IsValid)
+            var im = new ItemManager(item);
+
+            try
             {
-                raffle.UserProfile = user;
-
-                item.Raffles.Add(raffle);
-
-                db.SaveChanges();
+                var raffle = im.BuyRaffle(user);
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e);
             }
 
             return RedirectToAction("Index", id);
-        }
-
-        //
-        // GET: /Item/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Item item = db.Items.Find(id);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-            return View(item);
         }
 
         //
@@ -75,39 +65,12 @@ namespace Raffle.Controllers
             if (ModelState.IsValid)
             {
                 var user = db.UserProfiles.First(u => u.UserName == User.Identity.Name);
+                item.CreatedAt = DateTime.Now;
                 user.Items.Add(item);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = item.Id });
             }
 
-            return View(item);
-        }
-
-        //
-        // GET: /Item/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            Item item = db.Items.Find(id);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-            return View(item);
-        }
-
-        //
-        // POST: /Item/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Item item)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(item).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
             return View(item);
         }
 

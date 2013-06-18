@@ -2,21 +2,50 @@
 @model Item
 @{
     ViewBag.Title = Model.Name;
-    int possibleRaffles = (int)(Model.Price / Model.RafflePrice);
-    int availableRaffles = possibleRaffles - Model.Raffles.Count;
+    var rafflePercentage = (Model.Raffles.Count * 100) / Model.TotalRaffleCount;
 }
 
 <h2>@Model.Name</h2>
-<h3>@Model.Owner.UserName</h3>
+<h3><small>from</small> @Model.Owner.UserName</h3>
+
+@if (!Model.CanBuy)
+{
+    //ended 
+}
+else
+{
+    if (rafflePercentage > 0)
+    { 
+        <div class="progress">
+            <div class="bar" style="width: @(rafflePercentage)%"></div>
+        </div>
+    }
+
+    <h3>
+        <span class="label label-info">@(Model.TotalRaffleCount - Model.Raffles.Count)</span>
+        raffles left
+    </h3>
+    @using (Html.BeginForm())
+    {    
+        @Html.ValidationSummary(true)
+        <input type="submit" class="btn btn-primary btn-large" value="Buy" />
+    }
+}
 
 @foreach (Raffle raffle in Model.Raffles)
 {
-    <div>
-        @raffle.RaffleNumber
-    </div>
+    <ul class="thumbnails">
+        <li class="span3 tile tile-teal">
+            <a href="#" >
+                <h1>@raffle.RaffleNumber</h1>
+                <p>@raffle.UserProfile.UserName</p>
+                <p>@@@raffle.PurchasedAt</p>
+            </a>
+        </li>
+    </ul>
 }
 
-@if (availableRaffles > 0)
+@*@if (availableRaffles > 0)
 {
     using (Html.BeginForm())
     {        
@@ -31,4 +60,4 @@
 else
 {
     <h1>This item is out of raffles</h1>
-}
+}*@

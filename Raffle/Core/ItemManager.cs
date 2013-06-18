@@ -40,6 +40,8 @@ namespace Raffle.Core
 
             foreach (var raffle in otherRaffles)
                 raffle.IsPrized = false;
+
+            this.item.ClosedAt = DateTime.Now;
         }
 
         private void ValidateTransaction(UserProfile buyer)
@@ -64,7 +66,8 @@ namespace Raffle.Core
             {
                 ItemId = this.item.Id,
                 UserProfileId = buyer.UserId,
-                RaffleNumber = mostRecentRaffleNumber + 1
+                RaffleNumber = mostRecentRaffleNumber + 1,
+                PurchasedAt = DateTime.Now
             };
 
             buyer.Money -= this.item.RafflePrice;

@@ -1,0 +1,116 @@
+﻿@model Raffle.Models.UserProfile
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h1>
+    @Model.UserName
+    <small>Dashboard</small>
+</h1>
+
+<h2>Close call
+        <small>Almost raffled</small>
+</h2>
+
+<ul class="thumbnails">
+    @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.CloseCall)
+    {
+        var rafflePercentage = (item.Raffles.Count * 100) / item.TotalRaffleCount;
+        <li class="span3">
+            <div class="thumbnail">
+                <img src="http://placehold.it/260x180" alt="" />
+                <div class="caption">
+                    <h5>@item.Name</h5>
+                    <p>@item.Description</p>
+                    @if (rafflePercentage > 0)
+                    { 
+                        <div class="progress">
+                            <div class="bar" style="width: @(rafflePercentage)%"></div>
+                        </div>   
+                    }
+                    <h5>
+                        <span class="label label-info">@(item.TotalRaffleCount - item.Raffles.Count)</span>
+                        raffles left
+                    </h5>
+                    <p>
+                        @Html.ActionLink("Buy", "Index", "Item", new { id = item.Id }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Details", "Index", "Item", new { id = item.Id }, new { @class = "btn" })
+                    </p>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+
+<div class="row">
+    <div class="span6">
+        <h2>my raffles
+        <small>most recent</small>
+        </h2>
+
+        <ul class="thumbnails">
+            @foreach (var raffle in (IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases)
+            {
+                var rafflePercentage = (raffle.Item.Raffles.Count * 100) / raffle.Item.TotalRaffleCount;
+                <li class="span3">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/260x180" alt="" />
+                        <div class="caption">
+                            <h5>@raffle.Item.Name</h5>
+                            <p>@raffle.Item.Description</p>
+                            @if (rafflePercentage > 0)
+                            { 
+                                <div class="progress">
+                                    <div class="bar" style="width: @(rafflePercentage)%"></div>
+                                </div>   
+                            }
+                            <h5>
+                                <span class="label label-info">@(raffle.Item.TotalRaffleCount - raffle.Item.Raffles.Count)</span>
+                                raffles left
+                            </h5>
+                            <p>@@@raffle.PurchasedAt</p>
+                            <p>
+                                @Html.ActionLink("Details", "Index", "Item", new { id = raffle.Item.Id }, new { @class = "btn btn-primary" })
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="span6">
+        <h2>My Items
+        <small>recently added</small>
+            @Html.ActionLink("Sell", "Create", "Item", null, new { @class = "btn btn-primary" })
+        </h2>
+
+        <ul class="thumbnails">
+            @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.MyItems)
+            {
+                var rafflePercentage = (item.Raffles.Count * 100) / item.TotalRaffleCount;
+                <li class="span3">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/260x180" alt="" />
+                        <div class="caption">
+                            <h5>@item.Name</h5>
+                            <p>@item.Description</p>
+                            @if (rafflePercentage > 0)
+                            { 
+                                <div class="progress">
+                                    <div class="bar" style="width: @(rafflePercentage)%"></div>
+                                </div>   
+                            }
+                            <h5>
+                                <span class="label label-info">@(item.TotalRaffleCount - item.Raffles.Count)</span>
+                                raffles left
+                            </h5>
+                            <p>
+                                @Html.ActionLink("Details", "Index", "Item", new { id = item.Id }, new { @class = "btn btn-primary" })
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

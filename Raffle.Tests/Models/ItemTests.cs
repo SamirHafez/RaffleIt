@@ -29,7 +29,6 @@ namespace Raffle.Tests.Models
                     var account = new UserProfile
                     {
                         UserName = "user",
-                        Email = "user@raffle.com"
                     };
 
                     context.UserProfiles.Add(account);
