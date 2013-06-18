@@ -22,6 +22,8 @@ namespace Raffle.Controllers
             if (!id.HasValue)
                 return View("List", db.Items.ToList());
 
+            ViewBag.User = db.UserProfiles.First(u => u.UserName == User.Identity.Name);
+
             return View(db.Items.Find(id));
         }
 
@@ -39,6 +41,7 @@ namespace Raffle.Controllers
             try
             {
                 var raffle = im.BuyRaffle(user);
+                db.SaveChanges();
             }
             catch (Exception e)
             {

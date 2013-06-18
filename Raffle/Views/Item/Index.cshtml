@@ -2,42 +2,84 @@
 @{
     ViewBag.Title = Model.Name;
     var rafflePercentage = (Model.Raffles.Count * 100) / Model.TotalRaffleCount;
+    var user = ((Raffle.Models.UserProfile)ViewBag.User);
+    var hasBought = user.Raffles.Any(r => r.ItemId == Model.Id);
 }
 
 <h2>@Model.Name</h2>
 <h3><small>from</small> @Model.Owner.UserName</h3>
 
-@if (!Model.CanBuy)
+@if (rafflePercentage > 0)
+{ 
+    <div class="progress">
+        <div class="bar" style="width: @(rafflePercentage)%"></div>
+    </div>
+}
+<h3>
+    <span class="label label-info">@(Model.TotalRaffleCount - Model.Raffles.Count)</span>
+    raffles left (@(Model.RafflePrice)€/raffle)
+</h3>
+
+@if (Model.OwnerId == user.UserId)
 {
-    //ended 
+    //Manage item 
 }
 else
-{
-    if (rafflePercentage > 0)
-    { 
-        <div class="progress">
-            <div class="bar" style="width: @(rafflePercentage)%"></div>
-        </div>
-    }
+    if (!Model.CanBuy)
+    {
+        //Item closed
 
-    <h3>
-        <span class="label label-info">@(Model.TotalRaffleCount - Model.Raffles.Count)</span>
-        raffles left
-    </h3>
-    using (Html.BeginForm())
-    {    
-        @Html.ValidationSummary(true)
-        <input type="submit" class="btn btn-primary btn-large" value="Buy" />
+        if (hasBought && user.Raffles.Any(r => r.ItemId == Model.Id && r.IsPrized == true))
+        {
+            <div class="alert alert-success">
+                <strong>Congratulations!</strong>
+                You have won this item
+                @Html.ActionLink("Now what?", "Index", "Help", null, new { @class = "btn btn-primary" })
+            </div>
+        }
+        else
+        {
+             <div class="alert alert-info">
+                <strong>Sorry!</strong>
+                This item as already been raffled
+            </div>
+        }
     }
-}
+    else
+    {
+        if (hasBought)
+        {
+             <div class="alert alert-info">
+                <strong>Sorry!</strong>
+                You cannot purchase more than one raffle of this item
+            </div>
+        }
+        else
+            if (user.Money < Model.RafflePrice)
+            {
+            <div class="alert alert-info">
+                <strong>Sorry!</strong>
+                You don't have enough credit to purchase a raffle for this item
+                    @Html.ActionLink("Acquire credit", "Manage", "Account", new { id = user.UserId }, new { @class = "btn btn-primary" })
+            </div>
+            }
+            else
+            {
+                using (Html.BeginForm())
+                {    
+                @Html.ValidationSummary(true)
+                <input type="submit" class="btn btn-primary btn-large" value="Buy" />
+                }
+            }
+    }
 
 @foreach (Raffle.Models.Raffle raffle in Model.Raffles)
 {
     <ul class="thumbnails">
-        <li class="span3 tile tile-teal">
+        <li class="span3 tile">
             <a href="#" >
                 <h1>@raffle.RaffleNumber</h1>
-                <p>@raffle.UserProfile.UserName</p>
+                @raffle.UserProfile.UserName
                 <p>@@@raffle.PurchasedAt</p>
             </a>
         </li>
