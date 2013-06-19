@@ -8,13 +8,14 @@
     var isOwner = Model.OwnerId == user.UserId;
 }
 
-    <h2>
-        @Model.Name
-        @if (!isOwner) { 
+<h2>
+    @Model.Name
+    @if (!isOwner)
+    { 
         <small>from <strong>@Model.Owner.UserName</strong></small>
-        }
-    </h2>
-    <h4>@Model.Description</h4>
+    }
+</h2>
+<h4>@Model.Description</h4>
 
 @if (rafflePercentage > 0)
 { 
@@ -27,7 +28,10 @@
         <ul class="thumbnails">
             <li class="span2 tile">
                 <h1>@rafflesLeft</h1>
-                <h3>@if(rafflesLeft != 1){<text>raffles</text>}else{<text>raffle</text>} left</h3>
+                <h3>@if (rafflesLeft != 1)
+                    {<text>raffles</text>}
+                    else
+                    {<text>raffle</text>} left</h3>
             </li>
         </ul>
     </div>
@@ -41,9 +45,9 @@
                 Please wait for all the raffles to be bought
             </div>
             }
-            else 
-            { 
-            //TODO - Send to user
+            else
+            {
+                //TODO - Send to user
             }
         }
         else
@@ -77,23 +81,16 @@
             </div>
                 }
                 else
-                    if (user.Money < Model.RafflePrice)
+                {
+                    var starterButton = PayPal.ButtonManager.BuyNowButton.Create(new PayPal.ButtonManager.HtmlButtonVariables
                     {
-            <div class="alert alert-info">
-                <strong>Sorry!</strong>
-                You don't have enough credit to purchase a raffle for this item
-                    <br />
-                @Html.ActionLink("Acquire credit", "Manage", "Account", new { id = user.UserId }, new { @class = "btn btn-primary" })
-            </div>
-                    }
-                    else
-                    {
-                        using (Html.BeginForm())
-                        {    
-            @Html.ValidationSummary(true)
-            <input type="submit" class="btn btn-primary btn-large" value="Buy" />
-                        }
-                    }
+                        Business = "rhymecheatEbay-facilitator@gmail.com",
+                        ItemName = "raffle",
+                        Amount = Model.RafflePrice.ToString(),
+                        CurrencyCode = "EUR"
+                    });
+                    @(new HtmlString(starterButton.WebSiteCode))
+                }
             }
     </div>
 </div>

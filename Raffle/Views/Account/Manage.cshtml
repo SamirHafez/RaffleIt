@@ -25,62 +25,6 @@
     </div>
 </div>
 
-@{
-    var starterButton = PayPal.ButtonManager.BuyNowButton.Create(new PayPal.ButtonManager.HtmlButtonVariables
-    {
-        Business = "rhymecheatEbay-facilitator@gmail.com",
-        ItemName = "Starter Package",
-        Amount = "5",
-        CurrencyCode = "EUR"
-    });
-
-    var casualButton = PayPal.ButtonManager.BuyNowButton.Create(new PayPal.ButtonManager.HtmlButtonVariables
-    {
-        Business = "rhymecheatEbay-facilitator@gmail.com",
-        ItemName = "Casual Package",
-        Amount = "10",
-        CurrencyCode = "EUR"
-    });
-
-    var powerButton = PayPal.ButtonManager.BuyNowButton.Create(new PayPal.ButtonManager.HtmlButtonVariables
-    {
-        Business = "rhymecheatEbay-facilitator@gmail.com",
-        ItemName = "Power Package",
-        Amount = "15",
-        CurrencyCode = "EUR"
-    });
-}
-
-<fieldset>
-    <legend>
-        credit
-        <small>acquire credit</small>
-    </legend>
-    <div class="row">
-        <div class="span3">
-            <h3>
-                starter package
-                <small>5€</small>
-            </h3>
-            @(new HtmlString(starterButton.WebSiteCode))
-        </div>
-        <div class="span3">
-            <h3>
-                casual package
-                <small>10€</small>
-            </h3>
-            @(new HtmlString(casualButton.WebSiteCode))
-        </div>
-        <div class="span3">
-            <h3>
-                power package
-                <small>15€</small>
-            </h3>
-            @(new HtmlString(powerButton.WebSiteCode))
-        </div>
-    </div>
-</fieldset>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

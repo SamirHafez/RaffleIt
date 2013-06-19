@@ -18,8 +18,6 @@ namespace Raffle.Models
         [Required]
         public string UserName { get; set; }
 
-        public decimal Money { get; set; }
-
         public int Reputation { get; set; }
 
         public virtual ICollection<Raffle> Raffles { get; set; }
