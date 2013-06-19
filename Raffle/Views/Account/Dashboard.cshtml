@@ -3,37 +3,57 @@
     ViewBag.Title = "Dashboard";
 }
 
-<div class="page-header">
-    <h1>dashboard
+<h2>dashboard
         <small>manage your raffles and items</small>
-    </h1>
-</div>
+</h2>
 
-<div>
-    <h2>raffles
+@if (((IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases).Any())
+{
+    <fieldset>
+        <legend>my raffles
         <small>recently bought</small>
-        @Html.ActionLink("More", "NA", null, new { @class = "btn btn-primary" })
-    </h2>
+            @Html.ActionLink("More", "NA", null, new { @class = "btn btn-primary" })
+        </legend>
 
-    <ul class="thumbnails">
-        @foreach (var raffle in (IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases)
-        {
-            Html.RenderPartial("_ItemPreviewPartial", raffle.Item);
-        }
-    </ul>
-</div>
+        <ul class="thumbnails">
+            @foreach (var raffle in (IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases)
+            {
+                Html.RenderPartial("_ItemPreviewPartial", raffle.Item);
+            }
+        </ul>
+    </fieldset>
+}
+else
+{
+    <div class="alert alert-info">
+        <strong>no raffles!</strong>
+        you haven't bought any raffles recently
+        @Html.ActionLink("search for raffles", "Index", "Home", null, new { @class = "btn btn-primary" })
+    </div>
+}
 
-<div>
-    <h2>items
+@if (((IQueryable<Raffle.Models.Item>)@ViewBag.MyItems).Any())
+{ 
+    <fieldset>
+        <legend>my items
         <small>recently added</small>
-        @Html.ActionLink("More", "NA", null, new { @class = "btn btn-primary" })
-        @Html.ActionLink("Sell", "Create", "Item", null, new { @class = "btn btn-info" })
-    </h2>
+            @Html.ActionLink("More", "NA", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Sell", "Create", "Item", null, new { @class = "btn btn-info" })
+        </legend>
 
-    <ul class="thumbnails">
-        @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.MyItems)
-        {
-            Html.RenderPartial("_ItemPreviewPartial", item);
-        }
-    </ul>
-</div>
+        <ul class="thumbnails">
+            @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.MyItems)
+            {
+                Html.RenderPartial("_ItemPreviewPartial", item);
+            }
+        </ul>
+    </fieldset>
+}
+else
+{
+    <div class="alert alert-info">
+        <strong>no items!</strong>
+        you 
+        @Html.ActionLink("sell", "Create", "Item", null, new { @class = "btn btn-primary" })
+    </div>
+}

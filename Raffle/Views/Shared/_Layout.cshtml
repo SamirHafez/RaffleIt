@@ -11,12 +11,17 @@
 <body>
     <header>
         @Html.Partial("_LoginPartial")
+        <div class="page-header well">
+            <h1>raffle
+        <small>small price, big value</small>
+            </h1>
+        </div>
     </header>
     <div id="body">
         @RenderBody()
     </div>
     <footer class="well">
-        <p>&copy; @DateTime.Now.Year - Raffle</p>
+        <span class="label label-info">@DateTime.Now.Year</span> Raffle
     </footer>
 
     @Scripts.Render("~/bundles/jquery")

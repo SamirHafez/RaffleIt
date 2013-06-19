@@ -22,6 +22,11 @@ namespace Raffle.Controllers
                                              .Take(5)
                                              .AsQueryable();
 
+            ViewBag.Latest = context.Items.Where(i => i.OwnerId != user.UserId)
+                                          .OrderByDescending(i => i.CreatedAt)
+                                          .Take(5)
+                                          .AsQueryable();
+
             ViewBag.User = context.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
             return View("Main");

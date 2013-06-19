@@ -8,15 +8,13 @@
     var isOwner = Model.OwnerId == user.UserId;
 }
 
-<div class="page-header">
-    <h1>
+    <h2>
         @Model.Name
         @if (!isOwner) { 
         <small>from <strong>@Model.Owner.UserName</strong></small>
         }
-    </h1>
+    </h2>
     <h4>@Model.Description</h4>
-</div>
 
 @if (rafflePercentage > 0)
 { 
@@ -36,11 +34,17 @@
     <div class="span8">
         @if (isOwner)
         {
-            //Manage item 
+            if (Model.CanBuy)
+            { 
             <div class="alert alert-info">
                 <strong>Raffling!</strong>
                 Please wait for all the raffles to be bought
             </div>
+            }
+            else 
+            { 
+            
+            }
         }
         else
             if (!Model.CanBuy)

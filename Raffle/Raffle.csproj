@@ -336,6 +336,7 @@
     <Content Include="Views\Shared\_ItemPreviewPartial.cshtml" />
     <Content Include="Views\Account\Dashboard.cshtml" />
     <Content Include="Views\Home\Main.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
