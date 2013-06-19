@@ -5,12 +5,15 @@
     var user = ((Raffle.Models.UserProfile)ViewBag.User);
     var hasBought = user.Raffles.Any(r => r.ItemId == Model.Id);
     var rafflesLeft = Model.TotalRaffleCount - Model.Raffles.Count;
+    var isOwner = Model.OwnerId == user.UserId;
 }
 
 <div class="page-header">
     <h1>
         @Model.Name
+        @if (!isOwner) { 
         <small>from <strong>@Model.Owner.UserName</strong></small>
+        }
     </h1>
     <h4>@Model.Description</h4>
 </div>
@@ -30,10 +33,14 @@
             </li>
         </ul>
     </div>
-    <div class="span7">
-        @if (Model.OwnerId == user.UserId)
+    <div class="span8">
+        @if (isOwner)
         {
             //Manage item 
+            <div class="alert alert-info">
+                <strong>Raffling!</strong>
+                Please wait for all the raffles to be bought
+            </div>
         }
         else
             if (!Model.CanBuy)
@@ -90,7 +97,7 @@
     @foreach (Raffle.Models.Raffle raffle in Model.Raffles)
     {
         var state = raffle.IsPrized.GetValueOrDefault() ? "tile-teal" : string.Empty;
-        <li class="span3 tile @state">
+        <li class="span2 tile @state">
             <h1>@raffle.RaffleNumber</h1>
             <h6>@@ @raffle.PurchasedAt</h6>
         </li>

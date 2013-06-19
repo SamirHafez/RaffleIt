@@ -3,35 +3,36 @@
     ViewBag.Title = "Manage Account";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
+<div class="page-header">
+    <h1>
+        manage account
+        <small>logged in as <strong>@User.Identity.Name</strong></small>
+    </h1>
+</div>
 
-<p class="message-success">@ViewBag.StatusMessage</p>
-
-<p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
-
-@if (ViewBag.HasLocalPassword)
-{
+<div class="row">
+    <div class="span5">
+        @if (ViewBag.HasLocalPassword)
+        {
     @Html.Partial("_ChangePasswordPartial")
-}
-else
-{ 
+        }
+        else
+        { 
     @Html.Partial("_SetPasswordPartial")
-}
+        }
+    </div>
+    <div class="span5">
+            @Html.Action("RemoveExternalLogins")
+
+    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+    </div>
+</div>
 
 @*@{
 var paypalButton = PayPal.ButtonManager.BuyNowButton.Create("Raffle", "Starter Package", "10.00");
 }*@
 
 @*@(new HtmlString(paypalButton.WebSiteCode))*@
-
-<section id="externalLogins">
-    @Html.Action("RemoveExternalLogins")
-
-    <h3>Add an external login</h3>
-    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
-</section>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

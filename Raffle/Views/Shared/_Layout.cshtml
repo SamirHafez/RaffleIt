@@ -10,53 +10,17 @@
 </head>
 <body>
     <header>
-        @*<div class="pull-right">@Html.Partial("_LoginPartial")</div>*@
- @*       <div class="navbar">
-            <div class="navbar-inner">
-                <div class="container">
-                    <ul class="nav">
-                        <li>
-                            @Html.ActionLink("Home", "Index", "Home")
-
-                        </li>
-                        <li>
-                            @Html.ActionLink("About", "About", "Home")
-
-                        </li>
-                        <li>
-                            @Html.ActionLink("Contact", "Contact", "Home")
-
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>*@
+        @Html.Partial("_LoginPartial")
     </header>
     <div id="body">
-        <div class="row">
-            <div class="span2 well">
-                <ul class="nav nav-list">
-                    @Html.Partial("_LoginPartial")
-                    <li class="divider"></li>
-                    <li>
-                        @Html.ActionLink("Home", "Index", "Home")
-                    </li>
-                    <li>
-                        @Html.ActionLink("About", "About", "Home")
-                    </li>
-                </ul>
-            </div>
-            <div class="span7">
-                @RenderBody()
-            </div>
-        </div>
+        @RenderBody()
     </div>
-    <footer>
+    <footer class="well">
         <p>&copy; @DateTime.Now.Year - Raffle</p>
     </footer>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -10,6 +10,7 @@ using Raffle.Core;
 
 namespace Raffle.Controllers
 {
+    [Authorize]
     public class ItemController : Controller
     {
         private Context db = new Context();

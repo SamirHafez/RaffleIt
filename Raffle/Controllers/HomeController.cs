@@ -22,31 +22,9 @@ namespace Raffle.Controllers
                                              .Take(5)
                                              .AsQueryable();
 
-            ViewBag.LastPurchases = user.Raffles.OrderByDescending(r => r.PurchasedAt)
-                                                .Take(5)
-                                                .AsQueryable();
-
-            ViewBag.MyItems = user.Items.OrderByDescending(i => i.CreatedAt)
-                                        .Take(5)
-                                        .AsQueryable();
-
             ViewBag.User = context.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
-            return View("Dashboard", user);
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your app description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return View("Main");
         }
     }
 }

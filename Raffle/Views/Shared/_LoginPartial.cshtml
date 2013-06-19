@@ -4,18 +4,36 @@
     {
         user = ctx.UserProfiles.FirstOrDefault(up => up.UserName == User.Identity.Name);
     }
+    string reputation = string.Empty;
+    if (user != null) { 
+        reputation = user.Reputation < 0 ? "badge-important" : user.Reputation > 0 ? "badge-success" : string.Empty;
+    }
 }
 
+<ul class="nav nav-pills pull-right">
 @if (Request.IsAuthenticated)
 {
-    <ul class="nav nav-pills">
-        <li>
-            @Html.ActionLink(User.Identity.Name, "Manage", "Account")
-            <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
-            <span class="badge badge-info">@user.Money €</span>
-            <span class="badge badge-info">@user.Reputation</span>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                @User.Identity.Name
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    @Html.ActionLink("Dashboard", "Dashboard", "Account")
+                </li>
+                <li>
+                    @Html.ActionLink("Manage", "Manage", "Account")
+                </li>
+                <li>
+                    <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                </li>
+            </ul>
         </li>
-    </ul>
+        <li>
+            <span class="badge badge-info">@user.Money €</span>
+            <span class="badge @reputation">@user.Reputation</span>
+        </li>
     
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
     {
@@ -24,6 +42,7 @@
 }
 else
 {
-    <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Index", "Home")</li>
+        <li>@Html.ActionLink("Register", "Register", "Account")</li>
 }
+    </ul>

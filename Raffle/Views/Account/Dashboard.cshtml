@@ -4,26 +4,15 @@
 }
 
 <div class="page-header">
-    <h1>
-        @Model.UserName
-        <small>dashboard</small>
+    <h1>dashboard
+        <small>manage your raffles and items</small>
     </h1>
-</div>
-<div class="navbar">
-    <div class="navbar-inner">
-        <div class="container">
-            <ul class="nav">
-                <li><a href="#">General</a></li>
-                <li><a href="#">Raffles</a></li>
-                <li><a href="#">Items</a></li>
-            </ul>
-        </div>
-    </div>
 </div>
 
 <div>
     <h2>raffles
-        <small>most recent</small>
+        <small>recently bought</small>
+        @Html.ActionLink("More", "NA", null, new { @class = "btn btn-primary" })
     </h2>
 
     <ul class="thumbnails">
@@ -37,7 +26,8 @@
 <div>
     <h2>items
         <small>recently added</small>
-        @Html.ActionLink("Sell", "Create", "Item", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("More", "NA", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Sell", "Create", "Item", null, new { @class = "btn btn-info" })
     </h2>
 
     <ul class="thumbnails">

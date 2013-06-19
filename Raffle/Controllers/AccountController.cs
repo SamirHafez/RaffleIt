@@ -42,7 +42,7 @@ namespace Raffle.Controllers
 
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "The user name or password provided is incorrect.");
-            return View(model);
+            return RedirectToAction("Index", "Home", model);
         }
 
         //
@@ -135,6 +135,24 @@ namespace Raffle.Controllers
             ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
+        }
+
+        public ActionResult Dashboard()
+        {
+            var context = new Context();
+            UserProfile user = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+            ViewBag.LastPurchases = user.Raffles.OrderByDescending(r => r.PurchasedAt)
+                                                .Take(5)
+                                                .AsQueryable();
+
+            ViewBag.MyItems = user.Items.OrderByDescending(i => i.CreatedAt)
+                                        .Take(5)
+                                        .AsQueryable();
+
+            ViewBag.User = context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+
+            return View(user);
         }
 
         //

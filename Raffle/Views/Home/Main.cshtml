@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Main";
+}
+
+<div class="page-header">
+    <h1>
+        ending soon
+        <small>Almost raffled items</small>
+    </h1>
+</div>
+
+<ul class="thumbnails">
+    @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.CloseCall)
+    {
+        Html.RenderPartial("_ItemPreviewPartial", item);
+    }
+</ul>
