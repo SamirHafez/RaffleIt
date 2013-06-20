@@ -15,7 +15,7 @@
         <small>from <strong>@Model.Owner.UserName</strong></small>
     }
 </h2>
-<h4>@Model.Description</h4>
+<h3>@Model.Description</h3>
 
 @if (rafflePercentage > 0)
 { 
@@ -24,6 +24,14 @@
     </div>
 }
 <div class="row">
+    <div class="span3">
+        <ul class="thumbnails">
+            <li class="span3 tile tile-double">
+                <h1>@(Model.RafflePrice) €</h1>
+                <h3>each raffle</h3>
+            </li>
+        </ul>
+    </div>
     <div class="span2">
         <ul class="thumbnails">
             <li class="span2 tile">
@@ -35,14 +43,17 @@
             </li>
         </ul>
     </div>
-    <div class="span8">
+    <div class="span5">
         @if (isOwner)
         {
+            <h3>manage
+                <small>manage your item</small>
+            </h3>
             if (Model.CanBuy)
             { 
             <div class="alert alert-info">
                 <strong>Raffling!</strong>
-                Please wait for all the raffles to be bought
+                Please wait for all the raffles to be purchased
             </div>
             }
             else
@@ -51,6 +62,10 @@
             }
         }
         else
+        {
+            <h3>buy raffle
+                <small>or check your purchased raffle status</small>
+            </h3>
             if (!Model.CanBuy)
             {
                 //Item closed
@@ -85,23 +100,38 @@
                     var starterButton = PayPal.ButtonManager.BuyNowButton.Create(new PayPal.ButtonManager.HtmlButtonVariables
                     {
                         Business = "rhymecheatEbay-facilitator@gmail.com",
-                        ItemName = "raffle",
-                        Amount = Model.RafflePrice.ToString(),
+                        ItemName = string.Format("Raffle_{0}", Model.Id),
+                        Amount = Model.RafflePrice.ToString().Replace(",", "."),
                         CurrencyCode = "EUR"
                     });
-                    @(new HtmlString(starterButton.WebSiteCode))
+            @(new HtmlString(starterButton.WebSiteCode))
                 }
             }
+        }
     </div>
 </div>
-<ul class="thumbnails">
-    @foreach (Raffle.Models.Raffle raffle in Model.Raffles)
-    {
-        var state = raffle.IsPrized.GetValueOrDefault() ? "tile-teal" : string.Empty;
-        <li class="span2 tile @state">
-            <h1>@raffle.RaffleNumber</h1>
-            <h6>@@ @raffle.PurchasedAt</h6>
-        </li>
+@if (Model.Raffles.Any())
+{
+    <h3>purchased raffles
+        <small>raffles purchased for this item appear here</small>
+    </h3> 
+    <ul class="thumbnails">
+        @foreach (Raffle.Models.Raffle raffle in Model.Raffles)
+        {
+            var state = raffle.IsPrized.GetValueOrDefault() ? "tile-teal" : string.Empty;
+            <li class="span2 tile @state">
+                <h1>@raffle.RaffleNumber</h1>
+                <h6>@@ @raffle.PurchasedAt</h6>
+            </li>
     
-    }
-</ul>
+        }
+    </ul>
+}
+else
+{
+    <div class="alert alert-info">
+        <strong>waiting for the first!</strong>
+        no raffles for this item have been purchased yet
+    </div>
+}
+

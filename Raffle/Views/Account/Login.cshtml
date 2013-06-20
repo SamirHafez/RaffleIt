@@ -12,10 +12,10 @@
         @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
         {
  @Html.AntiForgeryToken()
- @Html.ValidationSummary(true)
 
             <fieldset>
                 <legend>directly</legend>
+                @Html.ValidationSummary(true)
                 <div>
                     @Html.LabelFor(m => m.UserName)
                     @Html.TextBoxFor(m => m.UserName)

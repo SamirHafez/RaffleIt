@@ -47,7 +47,7 @@ namespace Raffle.Models
 
         public decimal RafflePrice
         {
-            get { return decimal.Round(Price / TotalRaffleCount, 2); }
+            get { return decimal.Round((decimal)Price / TotalRaffleCount, 2); }
         }
 
         public Item()

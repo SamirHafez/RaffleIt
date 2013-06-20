@@ -61,8 +61,6 @@ namespace Raffle.Tests.Core
                 this.item.TotalRaffleCount = 100;
                 this.item.Raffles = new Raffle.Models.Raffle[100].ToList();
 
-                this.buyer.Money = 1000;
-
                 var im = new ItemManager(item);
 
                 Assert.Throws<InvalidOperationException>(() => im.BuyRaffle(this.buyer));
@@ -75,8 +73,6 @@ namespace Raffle.Tests.Core
 
                 this.item.Price = 100;
                 this.item.TotalRaffleCount = 100;
-
-                this.buyer.Money = 0;
 
                 var im = new ItemManager(item);
 
@@ -91,13 +87,10 @@ namespace Raffle.Tests.Core
                 this.item.Price = 100;
                 this.item.TotalRaffleCount = 100;
 
-                this.buyer.Money = 1;
-
                 var im = new ItemManager(item);
 
                 var raffle = im.BuyRaffle(this.buyer);
 
-                Assert.Equal(0, this.buyer.Money);
                 Assert.Equal(this.buyer.UserId, raffle.UserProfileId);
                 Assert.Equal(this.item.Id, raffle.ItemId);
                 Assert.True(raffle.RaffleNumber > 0);
@@ -113,8 +106,6 @@ namespace Raffle.Tests.Core
 
                 this.item.Price = 1;
                 this.item.TotalRaffleCount = 1;
-
-                buyer.Money = 1;
 
                 var im = new ItemManager(item);
 

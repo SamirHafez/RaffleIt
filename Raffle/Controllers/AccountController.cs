@@ -42,7 +42,7 @@ namespace Raffle.Controllers
 
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "The user name or password provided is incorrect.");
-            return RedirectToAction("Index", "Home", model);
+            return View(model);
         }
 
         //
@@ -79,7 +79,7 @@ namespace Raffle.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { Money = 0, Reputation = 0 });
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { Reputation = 0 });
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }

@@ -42,7 +42,6 @@ namespace Raffle.Tests.Models
                     Assert.True(account.Items.Count == 0);
                     Assert.True(account.Raffles.Count == 0);
 
-                    Assert.True(account.Money == 0);
                     Assert.True(account.Reputation == 0);
                 }
             }

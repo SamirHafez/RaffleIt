@@ -51,9 +51,6 @@ namespace Raffle.Core
 
             if (this.item.OwnerId == buyer.UserId)
                 throw new InvalidOperationException();
-
-            if (buyer.Money < this.item.RafflePrice)
-                throw new InvalidOperationException();
         }
 
         private Raffle.Models.Raffle ExecuteTransaction(UserProfile buyer)
@@ -69,8 +66,6 @@ namespace Raffle.Core
                 RaffleNumber = mostRecentRaffleNumber + 1,
                 PurchasedAt = DateTime.Now
             };
-
-            buyer.Money -= this.item.RafflePrice;
 
             this.item.Raffles.Add(raffle);
 
