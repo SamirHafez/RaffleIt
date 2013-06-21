@@ -9,8 +9,8 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <header>
-        <div class="navbar navbar-fixed-top">
+    <div id="wrap">
+        <header class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a href="#" class="brand">
@@ -18,26 +18,20 @@
                     </a>
                     @Html.Partial("_LoginPartial")
                 </div>
-        </div>
-        </div>
-
-        @*<div class="page-header well">
-            <h1>raffle
-        <small>small price, big value</small>
-            </h1>
-        </div>*@
-    </header>
-    @RenderBody()
-    @*    <footer>
-        <div class="container">
-            <div class="row-fluid">
-                <div class="span4 text-left">
-                    <span class="label label-info">@DateTime.Now.Year</span> Raffle
+            </div>
+        </header>
+        @RenderBody()
+    </div>
+    <footer>
+            <div class="container">
+                <div class="row-fluid">
+                    <div class="span4 text-left">
+                        <span class="badge badge-info">@DateTime.Now.Year</span>
+                        <span class="label label-info">Raffle</span>
+                    </div>
                 </div>
             </div>
-        </div>
-    </footer>*@
-
+        </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
