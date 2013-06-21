@@ -17,6 +17,7 @@
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 @User.Identity.Name
+                <span class="badge @reputation">@user.Reputation</span>
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
@@ -30,11 +31,7 @@
                     <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
                 </li>
             </ul>
-        </li>
-        <li>
-            <span class="badge @reputation">@user.Reputation</span>
-        </li>
-    
+        </li>    
         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
         {
         @Html.AntiForgeryToken();
