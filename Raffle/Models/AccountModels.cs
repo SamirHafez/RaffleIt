@@ -31,7 +31,7 @@ namespace Raffle.Models
 
                 var intervalRaffles = user.Raffles.Count(r => now - r.PurchasedAt < sixMonths);
 
-                var intervalItems = user.Items.Where(r => r.ClosedAt != null && (now - r.ClosedAt < sixMonths));
+                var intervalItems = user.Items.Where(r => r.DeliveredSuccess != null && r.ClosedAt != null && (now - r.ClosedAt < sixMonths));
                 var successItems = intervalItems.Count(r => r.DeliveredSuccess.GetValueOrDefault());
                 var failedItems = intervalItems.Count(r => !r.DeliveredSuccess.GetValueOrDefault());
 
