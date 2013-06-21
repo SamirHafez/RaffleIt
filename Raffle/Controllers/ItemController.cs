@@ -22,13 +22,20 @@ namespace Raffle.Controllers
         {
             ViewBag.User = db.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
-            if (!id.HasValue)
+            Item item;
+
+            if (!id.HasValue || (item = db.Items.Find(id)) == null)
                 return View("List", db.Items.OrderByDescending(i => i.CreatedAt)
                                             .Skip(skip)
                                             .Take(20)
                                             .AsQueryable());
 
-            return View(db.Items.Find(id));
+            ViewBag.Related = db.Items.Where(i => i.Category == item.Category)
+                                      .OrderByDescending(i => i.CreatedAt)
+                                      .Take(6)
+                                      .AsQueryable();
+
+            return View(item);
         }
 
         [HttpPost]

@@ -7,11 +7,9 @@
 <div class="container">
     <div class="row-fluid">
         <div class="span12">
-
             <h1>sell an item
-        <small>add an item to raffle</small>
+                <small>add an item to raffle</small>
             </h1>
-
             @using (Html.BeginForm())
             {
                 @Html.ValidationSummary(true)
@@ -20,21 +18,31 @@
                     <div class="span7">
                         <fieldset>
                             <legend>general</legend>
-
-                            <div class="editor-label">
-                                @Html.LabelFor(model => model.Name)
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class="input-prepend input-append">
+                                        <span class="add-on">
+                                            <i class="icon-user"></i>
+                                        </span>
+                                        @Html.TextBoxFor(m => m.Name, new { placeholder = "name", autofocus = "autofocus" })
+                                        <span class="add-on">
+                                            @Html.ValidationMessageFor(model => model.Name)
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="editor-field">
-                                @Html.EditorFor(model => model.Name)
-                                @Html.ValidationMessageFor(model => model.Name)
-                            </div>
-
-                            <div class="editor-label">
-                                @Html.LabelFor(model => model.Description)
-                            </div>
-                            <div class="editor-field">
-                                @Html.EditorFor(model => model.Description)
-                                @Html.ValidationMessageFor(model => model.Description)
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class="input-prepend input-append">
+                                        <span class="add-on">
+                                            <i class="icon-align-justify"></i>
+                                        </span>
+                                        @Html.TextAreaFor(m => m.Description, new { placeholder = "description" })
+                                        <span class="add-on">
+                                            @Html.ValidationMessageFor(model => model.Description)
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </fieldset>
                     </div>
@@ -48,25 +56,36 @@
 
                 <fieldset>
                     <legend>pricing</legend>
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.Price)
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-prepend input-append">
+                                <span class="add-on">
+                                    <i class="icon-dollar"></i>
+                                </span>
+                                @Html.TextBoxFor(m => m.Price, new { placeholder = "price", type = "number" })
+                                <span class="add-on">
+                                    @Html.ValidationMessageFor(model => model.Price)
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="editor-field">
-                        @Html.EditorFor(model => model.Price)
-                        @Html.ValidationMessageFor(model => model.Price)
-                    </div>
-
-                    <div class="editor-label">
-                        @Html.LabelFor(model => model.TotalRaffleCount)
-                    </div>
-                    <div class="editor-field">
-                        @Html.DropDownListFor(model => model.TotalRaffleCount, new[] { string.Empty, "5", "10", "20", "30", "40", "50" }.Select(i => new SelectListItem { Text = i, Value = i }))
-                        @Html.ValidationMessageFor(model => model.TotalRaffleCount)
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-prepend input-append">
+                                <span class="add-on">
+                                    <i class="icon-user"></i>
+                                </span>
+                                @Html.DropDownListFor(model => model.TotalRaffleCount, new[] { string.Empty, "5", "10", "20", "30", "40", "50" }.Select(i => new SelectListItem { Text = i, Value = i }), new { placeholder = "raffle count" })
+                                <span class="add-on">
+                                    @Html.ValidationMessageFor(model => model.TotalRaffleCount)
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </fieldset>
 
                 <p>
-                    <input type="submit" class="btn btn-primary btn-large" value="Sell" />
+                    <input type="submit" class="btn btn-primary btn-large" value="sell" />
                 </p>
 
             }

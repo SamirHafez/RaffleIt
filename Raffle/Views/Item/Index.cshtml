@@ -138,6 +138,17 @@
                 </div>
             }
 
+            @if (((IQueryable<Raffle.Models.Item>)ViewBag.Related).Any())
+            {
+                <h2>
+                    related
+                    <small>lastest items in the same category</small>
+                </h2>
+                @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.Related)
+                {
+                    Html.RenderPartial("_ItemPreviewPartial", item);
+                }
+            }
         </div>
     </div>
 </div>

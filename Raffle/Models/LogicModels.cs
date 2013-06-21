@@ -14,24 +14,29 @@ namespace Raffle.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage="*")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "*")]
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "*")]
+        public string Category { get; set; }
+
+        [Required(ErrorMessage = "*")]
         [DataType(DataType.Currency)]
         public int Price { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "*")]
         [Display(Name = "Number of Raffles")]
         public int TotalRaffleCount { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
         public DateTime? ClosedAt { get; set; }
+
+        public bool? DeliveredSuccess { get; set; }
 
         [ForeignKey("Owner")]
         public int OwnerId { get; set; }
