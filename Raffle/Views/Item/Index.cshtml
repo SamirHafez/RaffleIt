@@ -115,8 +115,8 @@
             </div>
             @if (Model.Raffles.Any())
             {
-                <h2>purchased raffles
-        <small>raffles purchased for this item appear here</small>
+                <h2>purchases
+        <small>raffles purchased for this item</small>
                 </h2> 
                 <ul class="thumbnails">
                     @foreach (Raffle.Models.Raffle raffle in Model.Raffles)
@@ -134,7 +134,7 @@
             {
                 <div class="alert alert-info">
                     <strong>waiting for the first!</strong>
-                    no raffles for this item have been purchased yet
+                    no raffles have been purchased for this item
                 </div>
             }
 

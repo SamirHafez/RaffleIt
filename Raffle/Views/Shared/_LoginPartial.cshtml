@@ -22,10 +22,10 @@
             </a>
             <ul class="dropdown-menu">
                 <li>
-                    @Html.ActionLink("Dashboard", "Dashboard", "Account")
+                    @Html.ActionLink("dashboard", "Dashboard", "Account")
                 </li>
                 <li>
-                    @Html.ActionLink("Manage", "Manage", "Account")
+                    @Html.ActionLink("manage", "Manage", "Account")
                 </li>
                 <li>
                     <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
@@ -39,7 +39,7 @@
     }
     else
     {
-        <li>@Html.ActionLink("Login", "Login", "Account")</li>
-        <li>@Html.ActionLink("Register", "Register", "Account")</li>
+        <li>@Html.ActionLink("login", "Login", "Account")</li>
+        <li>@Html.ActionLink("register", "Register", "Account")</li>
     }
 </ul>
