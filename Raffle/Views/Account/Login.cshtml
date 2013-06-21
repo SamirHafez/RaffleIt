@@ -3,7 +3,80 @@
     ViewBag.Title = "Login";
 }
 
-<h2>login
+<div class="container">
+    <div class="row-fluid">
+        <div class="well span6 offset3 text-center">
+            <div class="row-fluid">
+                <div class="span5">
+                    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+                    {
+                        <h2>login</h2>
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="input-prepend">
+                                    <span class="add-on">
+                                        <i class="icon-user"></i>
+                                    </span>
+                                    @Html.TextBoxFor(m => m.UserName, new { placeholder = "username" })
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="input-prepend">
+                                    <span class="add-on">
+                                        <i class="icon-lock"></i>
+                                    </span>
+                                    @Html.PasswordFor(m => m.Password, new { placeholder = "password" })
+                                </div>
+                            </div>
+                        </div>@*
+
+                        <div>
+                            @Html.LabelFor(m => m.UserName)
+                            @Html.TextBoxFor(m => m.UserName)
+                            @Html.ValidationMessageFor(m => m.UserName)
+                        </div>
+                        <div>
+                            @Html.LabelFor(m => m.Password)
+                            @Html.PasswordFor(m => m.Password)
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                        <div>
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>*@
+                        <input type="submit" class="btn btn-primary" value="log in" />
+                    }
+                </div>
+
+                <div class="span5 pull-right">
+                    @Html.Action("ExternalLoginsList", "Account", new { ReturnUrl = ViewBag.ReturnUrl })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<h2>login
     <small>or @Html.ActionLink("Register", "Register", null, new { @class = "btn btn-primary" }) for free if you don't have an account</small>
 </h2>
 
@@ -11,7 +84,7 @@
     <div class="span5">
         @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
         {
- @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
 
             <fieldset>
                 <legend>directly</legend>
@@ -38,7 +111,7 @@
     <div class="span5">
         @Html.Action("ExternalLoginsList", "Account", new { ReturnUrl = ViewBag.ReturnUrl })
     </div>
-</div>
+</div>*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

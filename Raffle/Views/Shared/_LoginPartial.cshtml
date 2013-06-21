@@ -5,14 +5,15 @@
         user = ctx.UserProfiles.FirstOrDefault(up => up.UserName == User.Identity.Name);
     }
     string reputation = string.Empty;
-    if (user != null) { 
+    if (user != null)
+    {
         reputation = user.Reputation < 0 ? "badge-important" : user.Reputation > 0 ? "badge-success" : string.Empty;
     }
 }
 
 <ul class="nav nav-pills pull-right">
-@if (Request.IsAuthenticated)
-{
+    @if (Request.IsAuthenticated)
+    {
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 @User.Identity.Name
@@ -34,14 +35,14 @@
             <span class="badge @reputation">@user.Reputation</span>
         </li>
     
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-    {
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
         @Html.AntiForgeryToken();
+        }
     }
-}
-else
-{
+    else
+    {
         <li>@Html.ActionLink("Log in", "Login", "Account")</li>
         <li>@Html.ActionLink("Register", "Register", "Account")</li>
-}
-    </ul>
+    }
+</ul>

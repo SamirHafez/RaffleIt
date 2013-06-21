@@ -1,4 +1,17 @@
-﻿body{
+﻿/*body{
     width: 970px;
     margin: 0 auto;
+}*/
+
+body {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    /*background: url("http://globeattractions.com/wp-content/uploads/2012/03/nature-landsacpe-beautiful-wallpapers-widescreen-beauty-wallpaper.jpg") no-repeat fixed center left;*/
+}
+
+footer{
+    height: 60px;
+    background-color: #2A2A2A;
+    padding-top:20px;
+    padding-bottom: 60px;
 }

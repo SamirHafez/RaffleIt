@@ -2,30 +2,37 @@
     ViewBag.Title = "Main";
 }
 
-<ul class="nav nav-tabs">
-    <li class="active">
-        @Html.ActionLink("Recent", "Index", "Home")
-    </li>
-</ul>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12">
 
-<h2>ending soon
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    @Html.ActionLink("Recent", "Index", "Home")
+                </li>
+            </ul>
+
+            <h2>ending soon
         <small>Almost raffled items</small>
-</h2>
+            </h2>
 
-<ul class="thumbnails">
-    @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.CloseCall)
-    {
-        Html.RenderPartial("_ItemPreviewPartial", item);
-    }
-</ul>
+            <ul class="thumbnails">
+                @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.CloseCall)
+                {
+                    Html.RenderPartial("_ItemPreviewPartial", item);
+                }
+            </ul>
 
-<h2>recent
+            <h2>recent
         <small>recently added items</small>
-</h2>
+            </h2>
 
-<ul class="thumbnails">
-    @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.Latest)
-    {
-        Html.RenderPartial("_ItemPreviewPartial", item);
-    }
-</ul>
+            <ul class="thumbnails">
+                @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.Latest)
+                {
+                    Html.RenderPartial("_ItemPreviewPartial", item);
+                }
+            </ul>
+        </div>
+    </div>
+</div>

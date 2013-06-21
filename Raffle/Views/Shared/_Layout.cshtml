@@ -10,19 +10,33 @@
 </head>
 <body>
     <header>
-        @Html.Partial("_LoginPartial")
-        <div class="page-header well">
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a href="#" class="brand">
+                        <img src="http://placehold.it/225x61" alt="Raffle" />
+                    </a>
+                    @Html.Partial("_LoginPartial")
+                </div>
+        </div>
+        </div>
+
+        @*<div class="page-header well">
             <h1>raffle
         <small>small price, big value</small>
             </h1>
-        </div>
+        </div>*@
     </header>
-    <div id="body">
-        @RenderBody()
-    </div>
-    <footer class="well">
-        <span class="label label-info">@DateTime.Now.Year</span> Raffle
-    </footer>
+    @RenderBody()
+    @*    <footer>
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span4 text-left">
+                    <span class="label label-info">@DateTime.Now.Year</span> Raffle
+                </div>
+            </div>
+        </div>
+    </footer>*@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

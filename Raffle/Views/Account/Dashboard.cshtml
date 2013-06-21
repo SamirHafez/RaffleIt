@@ -3,57 +3,64 @@
     ViewBag.Title = "Dashboard";
 }
 
-<h2>dashboard
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12">
+
+            <h2>dashboard
         <small>manage your raffles and items</small>
-</h2>
+            </h2>
 
-@if (((IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases).Any())
-{
-    <fieldset>
-        <legend>my raffles
+            @if (((IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases).Any())
+            {
+                <fieldset>
+                    <legend>my raffles
         <small>recently bought</small>
-            @Html.ActionLink("More", "NA", null, new { @class = "btn btn-primary" })
-        </legend>
+                        @Html.ActionLink("More", "NA", null, new { @class = "btn btn-primary" })
+                    </legend>
 
-        <ul class="thumbnails">
-            @foreach (var raffle in (IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases)
-            {
-                Html.RenderPartial("_ItemPreviewPartial", raffle.Item);
+                    <ul class="thumbnails">
+                        @foreach (var raffle in (IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases)
+                        {
+                            Html.RenderPartial("_ItemPreviewPartial", raffle.Item);
+                        }
+                    </ul>
+                </fieldset>
             }
-        </ul>
-    </fieldset>
-}
-else
-{
-    <div class="alert alert-info">
-        <strong>no raffles!</strong>
-        you haven't bought any raffles recently
+            else
+            {
+                <div class="alert alert-info">
+                    <strong>no raffles!</strong>
+                    you haven't bought any raffles recently
         @Html.ActionLink("search for raffles", "Index", "Home", null, new { @class = "btn btn-primary" })
-    </div>
-}
-
-@if (((IQueryable<Raffle.Models.Item>)@ViewBag.MyItems).Any())
-{ 
-    <fieldset>
-        <legend>my items
-        <small>recently added</small>
-            @Html.ActionLink("more", "NA", null, new { @class = "btn btn-primary" })
-            @Html.ActionLink("sell an item", "Create", "Item", null, new { @class = "btn btn-info" })
-        </legend>
-
-        <ul class="thumbnails">
-            @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.MyItems)
-            {
-                Html.RenderPartial("_ItemPreviewPartial", item);
+                </div>
             }
-        </ul>
-    </fieldset>
-}
-else
-{
-    <div class="alert alert-info">
-        <strong>no items!</strong>
-        you have not sold any items
+
+            @if (((IQueryable<Raffle.Models.Item>)@ViewBag.MyItems).Any())
+            { 
+                <fieldset>
+                    <legend>my items
+        <small>recently added</small>
+                        @Html.ActionLink("more", "NA", null, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("sell an item", "Create", "Item", null, new { @class = "btn btn-info" })
+                    </legend>
+
+                    <ul class="thumbnails">
+                        @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.MyItems)
+                        {
+                            Html.RenderPartial("_ItemPreviewPartial", item);
+                        }
+                    </ul>
+                </fieldset>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <strong>no items!</strong>
+                    you have not sold any items
         @Html.ActionLink("sell an item", "Create", "Item", null, new { @class = "btn btn-primary" })
+                </div>
+            }
+        </div>
     </div>
-}
+</div>
