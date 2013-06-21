@@ -5,13 +5,19 @@
     var user = ((Raffle.Models.UserProfile)ViewBag.User);
 }
 
-    <h2>Items
-        <small>search for items</small>
-    </h2>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12">
+            <h1>Items
+                <small>search for items</small>
+            </h1>
 
-<ul class="thumbnails">
-    @foreach (var item in Model)
-    {
-        Html.RenderPartial("_ItemPreviewPartial", item);
-    }
-</ul>
+            <ul class="thumbnails">
+                @foreach (var item in Model)
+                {
+                    Html.RenderPartial("_ItemPreviewPartial", item);
+                }
+            </ul>
+        </div>
+    </div>
+</div>

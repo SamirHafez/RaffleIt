@@ -12,9 +12,9 @@
                 </li>
             </ul>
 
-            <h2>ending soon
+            <h1>ending soon
         <small>Almost raffled items</small>
-            </h2>
+            </h1>
 
             <ul class="thumbnails">
                 @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.CloseCall)
@@ -23,9 +23,9 @@
                 }
             </ul>
 
-            <h2>recent
+            <h1>recent
         <small>recently added items</small>
-            </h2>
+            </h1>
 
             <ul class="thumbnails">
                 @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.Latest)
