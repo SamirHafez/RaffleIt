@@ -19,12 +19,12 @@ namespace Raffle.Controllers
 
             ViewBag.CloseCall = context.Items.Where(i => i.TotalRaffleCount - i.Raffles.Count != 0 && i.OwnerId != user.UserId)
                                              .OrderBy(i => i.TotalRaffleCount - i.Raffles.Count)
-                                             .Take(5)
+                                             .Take(6)
                                              .AsQueryable();
 
             ViewBag.Latest = context.Items.Where(i => i.OwnerId != user.UserId)
                                           .OrderByDescending(i => i.CreatedAt)
-                                          .Take(5)
+                                          .Take(6)
                                           .AsQueryable();
 
             ViewBag.User = context.UserProfiles.First(u => u.UserName == User.Identity.Name);

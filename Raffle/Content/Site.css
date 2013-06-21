@@ -1,21 +1,8 @@
-﻿/*html, body{
-    height: 100%;
-}
-
-body {
-    padding-top: 120px;
-    padding-bottom: 120px;
-}*/
-
-
-
-
-/* Sticky footer styles
+﻿/* Sticky footer styles
       -------------------------------------------------- */
 
 html, body {
     height: 100%;
-    /* The html and body elements cannot have any padding or margin. */
 }
 
 #wrap > .container {
@@ -23,12 +10,11 @@ html, body {
     padding-bottom: 120px;
 }
 
-/* Wrapper for page content to push down footer */
 #wrap {
+    /*background: url("http://globeattractions.com/wp-content/uploads/2012/03/nature-landsacpe-beautiful-wallpapers-widescreen-beauty-wallpaper.jpg") no-repeat fixed center left;*/
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    /* Negative indent footer by it's height */
     margin-bottom: -75px;
 }
 
@@ -38,7 +24,6 @@ footer {
     padding-bottom: 20px;
 }
 
-/* Lastly, apply responsive CSS fixes as necessary */
 @media (max-width: 767px) {
     footer {
         margin-left: -20px;
