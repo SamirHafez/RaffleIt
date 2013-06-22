@@ -1,6 +1,5 @@
 ﻿@model Raffle.Models.Item
 @{
-    decimal rafflePercentage = (Model.Raffles.Count * 100) / Model.TotalRaffleCount;
     int rafflesLeft = Model.TotalRaffleCount - Model.Raffles.Count;
     var user = ((Raffle.Models.UserProfile)ViewBag.User);
 }
@@ -10,9 +9,6 @@
         <img src="http://placehold.it/160x111" alt="" />
         <div class="caption">
             <h5>@Model.Name</h5>
-            <div class="progress">
-                <span class="bar" style="width: @(rafflePercentage)%"></span>
-            </div>
             @if (rafflesLeft == 0)
             {
                 if (Model.Raffles.Any(r => r.IsPrized.GetValueOrDefault() && r.UserProfileId == user.UserId))

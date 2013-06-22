@@ -1,6 +1,8 @@
-﻿using Raffle.Models;
+﻿using Raffle.App_Start;
+using Raffle.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
@@ -23,9 +25,8 @@ namespace Raffle
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            PaypalConfig.Initilize(ConfigurationManager.AppSettings);
             AuthConfig.RegisterAuth();
-
-            PayPal.Profile.Initialize("rhymecheatEbay-facilitator_api1.gmail.com", "1371677373", "A99sWksTL1d4MqQV9XAcXgxm3nh2Aq6F79k2yMvITGUairYn2EnPxu.s", "sandbox");
 
             Database.SetInitializer<Context>(new DropCreateDatabaseIfModelChanges<Context>());
         }

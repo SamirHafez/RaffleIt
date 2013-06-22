@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Raffle.Models;
 using Raffle.Core;
+using Raffle.App_Start;
 
 namespace Raffle.Controllers
 {
@@ -30,7 +31,7 @@ namespace Raffle.Controllers
                                             .Take(20)
                                             .AsQueryable());
 
-            ViewBag.Related = db.Items.Where(i => i.Category == item.Category)
+            ViewBag.Related = db.Items.Where(i => i.Category == item.Category && i.Id != item.Id)
                                       .OrderByDescending(i => i.CreatedAt)
                                       .Take(6)
                                       .AsQueryable();
@@ -79,9 +80,23 @@ namespace Raffle.Controllers
             if (ModelState.IsValid)
             {
                 var user = db.UserProfiles.First(u => u.UserName == User.Identity.Name);
+
                 item.CreatedAt = DateTime.Now;
                 user.Items.Add(item);
                 db.SaveChanges();
+
+                var buyButton = PayPal.ButtonManager.BuyNowButton.Create(new PayPal.ButtonManager.HtmlButtonVariables 
+                {
+                    Business = PaypalConfig.BusinessEmail,
+                    Quantity = "1",
+                    Amount = item.RafflePrice.ToString().Replace(",", "."),
+                    CurrencyCode = "EUR",
+                    ItemName = string.Format("Raffle_{0}", item.Id)
+                });
+
+                item.PaypalCode = buyButton.WebSiteCode;
+                db.SaveChanges();
+
                 return RedirectToAction("Index", new { id = item.Id });
             }
 

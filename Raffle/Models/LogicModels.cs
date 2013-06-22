@@ -32,6 +32,8 @@ namespace Raffle.Models
         [Display(Name = "Number of Raffles")]
         public int TotalRaffleCount { get; set; }
 
+        public string PaypalCode { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime? ClosedAt { get; set; }

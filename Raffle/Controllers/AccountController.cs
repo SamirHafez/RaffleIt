@@ -317,14 +317,6 @@ namespace Raffle.Controllers
             return View();
         }
 
-        //TODO
-        [AllowAnonymous]
-        public void PaypalIPN(FormCollection ipn)
-        {
-            //Verify the ipn
-            //Credit the user account
-        }
-
         [AllowAnonymous]
         [ChildActionOnly]
         public ActionResult ExternalLoginsList(string returnUrl)
