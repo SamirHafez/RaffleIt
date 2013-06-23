@@ -13,25 +13,31 @@ namespace Raffle.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            var context = new Context();
-            UserProfile user = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
-
-            if (user == null)
+            if (!Request.IsAuthenticated)
                 return View();
 
-            ViewBag.CloseCall = context.Items.Where(i => i.TotalRaffleCount - i.Raffles.Count != 0 && i.OwnerId != user.UserId)
-                                             .OrderBy(i => i.TotalRaffleCount - i.Raffles.Count)
-                                             .Take(6)
-                                             .AsQueryable();
+            var context = new Context();
+            UserProfile user = context.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
-            ViewBag.Latest = context.Items.Where(i => i.OwnerId != user.UserId)
-                                          .OrderByDescending(i => i.CreatedAt)
-                                          .Take(6)
-                                          .AsQueryable();
+            var latest = context.Items.Where(i => i.OwnerId != user.UserId)
+                                      .OrderByDescending(i => i.CreatedAt)
+                                      .Take(15)
+                                      .AsQueryable();
 
-            ViewBag.User = context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+            return View("Latest", latest);
+        }
 
-            return View("Main");
+        public ActionResult Ending()
+        {
+            var context = new Context();
+            UserProfile user = context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+
+            var ending = context.Items.Where(i => i.ClosedAt != null && i.OwnerId != user.UserId)
+                                      .OrderBy(i => i.TotalRaffleCount - i.Raffles.Count)
+                                      .Take(15)
+                                      .AsQueryable();
+
+            return View(ending);
         }
 
         public ActionResult Search(string query, int skip = 0)

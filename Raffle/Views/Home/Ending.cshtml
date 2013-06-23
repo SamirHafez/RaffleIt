@@ -1,0 +1,15 @@
+﻿@model IQueryable<Raffle.Models.Item>
+@{
+    ViewBag.Title = "Ending Soon";
+}
+
+<h1>ending soon
+        <small>Almost raffled</small>
+</h1>
+
+<ul class="thumbnails">
+    @foreach (var item in Model)
+    {
+        Html.RenderPartial("_ItemPreviewPartial", item);
+    }
+</ul>

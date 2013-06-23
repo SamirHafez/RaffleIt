@@ -1,0 +1,15 @@
+﻿@model IQueryable<Raffle.Models.Item>
+@{
+    ViewBag.Title = "What's New";
+}
+
+<h1>what's new
+        <small>recently added</small>
+</h1>
+
+<ul class="thumbnails">
+    @foreach (var item in Model)
+    {
+        Html.RenderPartial("_ItemPreviewPartial", item);
+    }
+</ul>

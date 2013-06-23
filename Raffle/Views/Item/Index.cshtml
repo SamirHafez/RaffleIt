@@ -32,65 +32,57 @@
             </li>
         </ul>
     </div>
-    <div class="span8">
+    <div class="span8 well">
         @if (isOwner)
         {
-            <h2>manage
-                <small>manage your item</small>
-            </h2>
             if (Model.CanBuy)
             { 
-            <div class="well">
-                <h3>raffling
-                        <small>wait for all the raffles to be sold</small>
-                </h3>
-            </div>@*
-            <div class="alert alert-info">
-                <strong>Raffling!</strong>
-                Please wait for all the raffles to be purchased
-            </div>*@
+            <h2>raffling
+                        <small>currently selling raffles</small>
+            </h2>
+            <span class="lead">when the last raffle has been sold we will provide you with more information</span>
             }
             else
             {
-                //TODO - Send to user
+            <h2>sold
+                    <small>the winner has been selected</small>
+            </h2>
+            <span class="lead">we sent you an email with the information of the winner to allow you to proceed with the shipping</span>
             }
         }
         else
         {
-            <h2>buy raffle
-                <small>or check your purchased raffle status</small>
-            </h2>
             if (!Model.CanBuy)
             {
-                //Item closed
-
                 if (hasBought && user.Raffles.Any(r => r.ItemId == Model.Id && r.IsPrized == true))
                 {
-            <div class="alert alert-success">
-                <strong>Congratulations!</strong>
-                You have won this item
-                        @Html.ActionLink("Now what?", "Index", "Help", null, new { @class = "btn btn-primary" })
-            </div>
+            <h2>congratulations
+                    <small>you have won this item</small>
+            </h2>
+            <span class="lead">we have already contacted the seller with your information regarding the shipping process</span>
                 }
                 else
                 {
-            <div class="alert alert-info">
-                <strong>Sorry!</strong>
-                This item as not been raffled to you
-            </div>
+            <h2>sorry
+                    <small>you did not win this item</small>
+            </h2>
+            <span class="lead">you can see the winning raffle below. better luck next time</span>
                 }
             }
             else
             {
                 if (hasBought)
                 {
-            <div class="alert alert-info">
-                <strong>Good luck!</strong>
-                You have purchased a raffle for this item. Wait for all the raffles to be purchased to find out if you are the winner
-            </div>
+            <h2>good luck
+                    <small>raffle purchased</small>
+            </h2>
+            <span class="lead">when all the raffles are purchased we will announce the winner</span>
                 }
                 else
                 {
+            <h2>buy raffle
+                        <small>proceed to purchase a raffle</small>
+            </h2>
             @(new HtmlString(Model.PaypalCode))
                 }
             }
@@ -126,7 +118,7 @@ else
 @if (((IQueryable<Raffle.Models.Item>)ViewBag.Related).Any())
 {
     <h2>related
-                    <small>lastest items in the same category</small>
+        <small>items in the same category</small>
     </h2>
     foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.Related)
     {

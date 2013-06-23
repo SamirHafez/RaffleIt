@@ -25,10 +25,13 @@
                     <div class="span2 well">
                         <ul class="nav nav-list">
                             <li>
-                                <a href="#">What's New</a>
+                                @Html.ActionLink("What's New", "Index", "Home")
                             </li>
                             <li>
-                                <a href="#">Ending Soon</a>
+                                @Html.ActionLink("Ending Soon", "Ending", "Home")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Suggestions", "Suggestion", "Home")
                             </li>
                             <li class="divider"></li>
                             <li class="nav-header">Categories</li>

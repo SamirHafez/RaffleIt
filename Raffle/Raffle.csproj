@@ -334,9 +334,10 @@
     <Content Include="Views\Item\Create.cshtml" />
     <Content Include="Views\Shared\_ItemPreviewPartial.cshtml" />
     <Content Include="Views\Account\Dashboard.cshtml" />
-    <Content Include="Views\Home\Main.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Home\Latest.cshtml" />
+    <Content Include="Views\Home\Ending.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
