@@ -1,0 +1,20 @@
+﻿@model IQueryable<Raffle.Models.Item>
+@{
+    ViewBag.Title = "Search";
+}
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12">
+            <h1>
+                search
+                <small>find items by name, description or category</small>
+            </h1>
+
+            @foreach (var item in Model)
+            {
+                Html.RenderPartial("_ItemPreviewPartial", item);
+            }
+        </div>
+    </div>
+</div>

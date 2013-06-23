@@ -14,6 +14,12 @@
 <ul class="nav pull-right">
     @if (Request.IsAuthenticated)
     {
+        <li>
+            @using (Html.BeginForm("Search", "Home", FormMethod.Get, new { @class = "navbar-search" })) 
+            {
+                <input type="text" name="query" class="search-query" placeholder="search">
+            }
+        </li>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 @User.Identity.Name

@@ -7,8 +7,10 @@ using System.Web.Mvc;
 
 namespace Raffle.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var context = new Context();
@@ -30,6 +32,20 @@ namespace Raffle.Controllers
             ViewBag.User = context.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
             return View("Main");
+        }
+
+        public ActionResult Search(string query, int skip = 0)
+        {
+            var context = new Context();
+            UserProfile user = context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+
+            var results = context.Items.Where(i => i.Name.Contains(query) || i.Description.Contains(query) || i.Category.Contains(query))
+                                       .OrderByDescending(i => i.CreatedAt)
+                                       .Skip(skip)
+                                       .Take(18)
+                                       .AsQueryable();
+
+            return View(results);
         }
     }
 }

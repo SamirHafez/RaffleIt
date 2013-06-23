@@ -332,12 +332,11 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Item\Index.cshtml" />
     <Content Include="Views\Item\Create.cshtml" />
-    <Content Include="Views\Item\Delete.cshtml" />
-    <Content Include="Views\Item\List.cshtml" />
     <Content Include="Views\Shared\_ItemPreviewPartial.cshtml" />
     <Content Include="Views\Account\Dashboard.cshtml" />
     <Content Include="Views\Home\Main.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

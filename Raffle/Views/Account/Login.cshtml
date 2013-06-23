@@ -33,7 +33,7 @@
                                     <span class="add-on">
                                         <i class="icon-user"></i>
                                     </span>
-                                    @Html.TextBoxFor(m => m.Password, new { placeholder = "password" })
+                                    @Html.PasswordFor(m => m.Password, new { placeholder = "password" })
                                     <span class="add-on">
                                         @Html.ValidationMessageFor(model => model.Password)
                                     </span>
