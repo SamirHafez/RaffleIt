@@ -3,32 +3,25 @@
     ViewBag.Title = "Manage Account";
 }
 
-<div class="container">
-    <div class="row-fluid">
-        <div class="span12">
-
-            <h1>manage account
+<h1>manage account
         <small>logged in as <strong>@User.Identity.Name</strong></small>
-            </h1>
+</h1>
 
-            <div class="row-fluid">
-                <div class="span6">
-                    @if (ViewBag.HasLocalPassword)
-                    {
-                        @Html.Partial("_ChangePasswordPartial")
-                    }
-                    else
-                    { 
-                        @Html.Partial("_SetPasswordPartial")
-                    }
-                </div>
-                <div class="span6">
-                    @Html.Action("RemoveExternalLogins")
+<div class="row-fluid">
+    <div class="span6">
+        @if (ViewBag.HasLocalPassword)
+        {
+            @Html.Partial("_ChangePasswordPartial")
+        }
+        else
+        { 
+            @Html.Partial("_SetPasswordPartial")
+        }
+    </div>
+    <div class="span6">
+        @Html.Action("RemoveExternalLogins")
 
-                    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
-                </div>
-            </div>
-        </div>
+        @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
     </div>
 </div>
 

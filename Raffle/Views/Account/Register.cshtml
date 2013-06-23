@@ -3,59 +3,54 @@
     ViewBag.Title = "Register";
 }
 
+<div class="well span7 offset2 text-center">
+    @using (Html.BeginForm())
+    {
+        <h1>register</h1>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
-<div class="container">
-    <div class="row-fluid">
-        <div class="well span7 offset2 text-center">
-            @using (Html.BeginForm())
-            {
-                <h1>register</h1>
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true)
-
-                <div class="control-group">
-                    <div class="controls">
-                        <div class="input-prepend input-append">
-                            <span class="add-on">
-                                <i class="icon-user"></i>
-                            </span>
-                            @Html.TextBoxFor(m => m.UserName, new { placeholder = "username", autofocus = "autofocus" })
-                            <span class="add-on">
-                                @Html.ValidationMessageFor(model => model.UserName)
-                            </span>
-                        </div>
-                    </div>
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-prepend input-append">
+                    <span class="add-on">
+                        <i class="icon-user"></i>
+                    </span>
+                    @Html.TextBoxFor(m => m.UserName, new { placeholder = "username", autofocus = "autofocus" })
+                    <span class="add-on">
+                        @Html.ValidationMessageFor(model => model.UserName)
+                    </span>
                 </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <div class="input-prepend input-append">
-                            <span class="add-on">
-                                <i class="icon-lock"></i>
-                            </span>
-                            @Html.PasswordFor(m => m.Password, new { placeholder = "password" })
-                            <span class="add-on">
-                                @Html.ValidationMessageFor(model => model.Password)
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <div class="input-prepend input-append">
-                            <span class="add-on">
-                                <i class="icon-lock"></i>
-                            </span>
-                            @Html.PasswordFor(m => m.ConfirmPassword, new { placeholder = "confirm password" })
-                            <span class="add-on">
-                                @Html.ValidationMessageFor(model => model.ConfirmPassword)
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <input type="submit" class="btn btn-primary" value="register" />
-            }
+            </div>
         </div>
-    </div>
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-prepend input-append">
+                    <span class="add-on">
+                        <i class="icon-lock"></i>
+                    </span>
+                    @Html.PasswordFor(m => m.Password, new { placeholder = "password" })
+                    <span class="add-on">
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <div class="input-prepend input-append">
+                    <span class="add-on">
+                        <i class="icon-lock"></i>
+                    </span>
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { placeholder = "confirm password" })
+                    <span class="add-on">
+                        @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                    </span>
+                </div>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="register" />
+    }
 </div>
 
 @section Scripts {

@@ -2,65 +2,64 @@
 @{
     ViewBag.Title = "Dashboard";
 }
-
-<div class="container">
-    <div class="row-fluid">
-        <div class="span12">
-
-            <h1>dashboard
+<h1>dashboard
         <small>manage your raffles and items</small>
-            </h1>
+</h1>
 
-            @if (((IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases).Any())
-            {
-                <fieldset>
-                    <legend>my raffles
+@if (((IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases).Any())
+{
+    <fieldset>
+        <legend>my raffles
         <small>recently bought</small>
-                        @Html.ActionLink("More", "NA", null, new { @class = "btn btn-primary" })
-                    </legend>
+            @Html.ActionLink("More", "NA", null, new { @class = "btn btn-primary" })
+        </legend>
 
-                    <ul class="thumbnails">
-                        @foreach (var raffle in (IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases)
-                        {
-                            Html.RenderPartial("_ItemPreviewPartial", raffle.Item);
-                        }
-                    </ul>
-                </fieldset>
-            }
-            else
+        <ul class="thumbnails">
+            @foreach (var raffle in (IQueryable<Raffle.Models.Raffle>)@ViewBag.LastPurchases)
             {
-                <div class="alert alert-info">
-                    <strong>no raffles!</strong>
-                    you haven't purchased any raffles yet
-        @Html.ActionLink("search for raffles", "Index", "Home", null, new { @class = "btn btn-primary" })
-                </div>
+                Html.RenderPartial("_ItemPreviewPartial", raffle.Item);
             }
-
-            @if (((IQueryable<Raffle.Models.Item>)@ViewBag.MyItems).Any())
-            { 
-                <fieldset>
-                    <legend>my items
-        <small>recently added</small>
-                        @Html.ActionLink("more", "NA", null, new { @class = "btn btn-primary" })
-                        @Html.ActionLink("sell an item", "Create", "Item", null, new { @class = "btn btn-info" })
-                    </legend>
-
-                    <ul class="thumbnails">
-                        @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.MyItems)
-                        {
-                            Html.RenderPartial("_ItemPreviewPartial", item);
-                        }
-                    </ul>
-                </fieldset>
-            }
-            else
-            {
-                <div class="alert alert-info">
-                    <strong>no items!</strong>
-                    you have not sold any items
-        @Html.ActionLink("sell an item", "Create", "Item", null, new { @class = "btn btn-primary" })
-                </div>
-            }
-        </div>
+        </ul>
+    </fieldset>
+}
+else
+{
+    <div class="well">
+        <h3>no raffles
+            <small>you haven't purchased any raffles yet</small>
+            @Html.ActionLink("see what's new", "Index", "Home", null, new { @class = "btn btn-primary" })
+        </h3>
     </div>
-</div>
+@*<div class="alert alert-info">
+        <strong>no raffles!</strong>
+        you haven't purchased any raffles yet
+        @Html.ActionLink("search for raffles", "Index", "Home", null, new { @class = "btn btn-primary" })
+    </div>*@
+}
+
+@if (((IQueryable<Raffle.Models.Item>)@ViewBag.MyItems).Any())
+{ 
+    <fieldset>
+        <legend>my items
+        <small>recently added</small>
+            @Html.ActionLink("more", "NA", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("sell an item", "Create", "Item", null, new { @class = "btn btn-info" })
+        </legend>
+
+        <ul class="thumbnails">
+            @foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.MyItems)
+            {
+                Html.RenderPartial("_ItemPreviewPartial", item);
+            }
+        </ul>
+    </fieldset>
+}
+else
+{
+    <div class="well">
+        <h3>no items
+            <small>you haven't sold any items yet</small>
+            @Html.ActionLink("sell an item", "Create", "Item", null, new { @class = "btn btn-primary" })
+        </h3>
+    </div>
+}

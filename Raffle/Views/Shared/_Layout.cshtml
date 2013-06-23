@@ -18,18 +18,52 @@
                 </div>
             </div>
         </header>
-        @RenderBody()
+        <div class="container">
+            <div class="row-fluid">
+                @if (Request.IsAuthenticated)
+                {
+                    <div class="span2 well">
+                        <ul class="nav nav-list">
+                            <li>
+                                <a href="#">What's New</a>
+                            </li>
+                            <li>
+                                <a href="#">Ending Soon</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li class="nav-header">Categories</li>
+
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">FAQ</a>
+                            </li>
+                            <li>
+                                <a href="#">Help</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="span10">
+                        @RenderBody()
+                    </div>
+                }
+                else
+                {
+                    @RenderBody()
+                }
+
+            </div>
+        </div>
     </div>
     <footer>
-            <div class="container">
-                <div class="row-fluid">
-                    <div class="span4 text-left">
-                        <span class="badge badge-info">@DateTime.Now.Year</span>
-                        <span class="label label-info">Raffle</span>
-                    </div>
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span4 text-left">
+                    <span class="badge badge-info">@DateTime.Now.Year</span>
+                    <span class="label label-info">Raffle</span>
                 </div>
             </div>
-        </footer>
+        </div>
+    </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
