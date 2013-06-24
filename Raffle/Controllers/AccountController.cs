@@ -15,11 +15,8 @@ namespace Raffle.Controllers
 {
     [Authorize]
     [InitializeSimpleMembership]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        //
-        // GET: /Account/Login
-
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -27,26 +24,17 @@ namespace Raffle.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Login
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
-            {
                 return RedirectToLocal(returnUrl);
-            }
 
-            // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "The user name or password provided is incorrect.");
             return View(model);
         }
-
-        //
-        // POST: /Account/LogOff
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -57,17 +45,11 @@ namespace Raffle.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //
-        // GET: /Account/Register
-
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
-
-        //
-        // POST: /Account/Register
 
         [HttpPost]
         [AllowAnonymous]
@@ -75,8 +57,6 @@ namespace Raffle.Controllers
         public ActionResult Register(RegisterModel model)
         {
             if (ModelState.IsValid)
-            {
-                // Attempt to register the user
                 try
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
@@ -87,14 +67,9 @@ namespace Raffle.Controllers
                 {
                     ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
                 }
-            }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
-
-        //
-        // POST: /Account/Disassociate
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -103,10 +78,7 @@ namespace Raffle.Controllers
             string ownerAccount = OAuthWebSecurity.GetUserName(provider, providerUserId);
             ManageMessageId? message = null;
 
-            // Only disassociate the account if the currently logged in user is the owner
             if (ownerAccount == User.Identity.Name)
-            {
-                // Use a transaction to prevent the user from deleting their last login credential
                 using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
                 {
                     bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
@@ -117,13 +89,9 @@ namespace Raffle.Controllers
                         message = ManageMessageId.RemoveLoginSuccess;
                     }
                 }
-            }
 
             return RedirectToAction("Manage", new { Message = message });
         }
-
-        //
-        // GET: /Account/Manage
 
         public ActionResult Manage(ManageMessageId? message)
         {
@@ -139,24 +107,20 @@ namespace Raffle.Controllers
 
         public ActionResult Dashboard()
         {
-            var context = new Context();
-            UserProfile user = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            UserProfile user = Context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
 
             ViewBag.LastPurchases = user.Raffles.OrderByDescending(r => r.PurchasedAt)
                                                 .Take(5)
-                                                .AsQueryable();
+                                                .ToList();
 
             ViewBag.MyItems = user.Items.OrderByDescending(i => i.CreatedAt)
                                         .Take(5)
-                                        .AsQueryable();
+                                        .ToList();
 
-            ViewBag.User = context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+            ViewBag.User = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
             return View(user);
         }
-
-        //
-        // POST: /Account/Manage
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -169,7 +133,6 @@ namespace Raffle.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // ChangePassword will throw an exception rather than return false in certain failure scenarios.
                     bool changePasswordSucceeded;
                     try
                     {
@@ -181,27 +144,18 @@ namespace Raffle.Controllers
                     }
 
                     if (changePasswordSucceeded)
-                    {
                         return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
-                    }
                     else
-                    {
                         ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
-                    }
                 }
             }
             else
             {
-                // User does not have a local password so remove any validation errors caused by a missing
-                // OldPassword field
                 ModelState state = ModelState["OldPassword"];
                 if (state != null)
-                {
                     state.Errors.Clear();
-                }
 
                 if (ModelState.IsValid)
-                {
                     try
                     {
                         WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
@@ -211,15 +165,10 @@ namespace Raffle.Controllers
                     {
                         ModelState.AddModelError("", e);
                     }
-                }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
-
-        //
-        // POST: /Account/ExternalLogin
 
         [HttpPost]
         [AllowAnonymous]
@@ -229,41 +178,29 @@ namespace Raffle.Controllers
             return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
         }
 
-        //
-        // GET: /Account/ExternalLoginCallback
-
         [AllowAnonymous]
         public ActionResult ExternalLoginCallback(string returnUrl)
         {
             AuthenticationResult result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
             if (!result.IsSuccessful)
-            {
                 return RedirectToAction("ExternalLoginFailure");
-            }
 
             if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
-            {
                 return RedirectToLocal(returnUrl);
-            }
 
             if (User.Identity.IsAuthenticated)
             {
-                // If the current user is logged in add the new account
                 OAuthWebSecurity.CreateOrUpdateAccount(result.Provider, result.ProviderUserId, User.Identity.Name);
                 return RedirectToLocal(returnUrl);
             }
             else
             {
-                // User is new, ask for their desired membership name
                 string loginData = OAuthWebSecurity.SerializeProviderUserId(result.Provider, result.ProviderUserId);
                 ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
                 ViewBag.ReturnUrl = returnUrl;
                 return View("ExternalLoginConfirmation", new RegisterExternalLoginModel { UserName = result.UserName, ExternalLoginData = loginData });
             }
         }
-
-        //
-        // POST: /Account/ExternalLoginConfirmation
 
         [HttpPost]
         [AllowAnonymous]
@@ -274,20 +211,15 @@ namespace Raffle.Controllers
             string providerUserId = null;
 
             if (User.Identity.IsAuthenticated || !OAuthWebSecurity.TryDeserializeProviderUserId(model.ExternalLoginData, out provider, out providerUserId))
-            {
                 return RedirectToAction("Manage");
-            }
 
             if (ModelState.IsValid)
-            {
-                // Insert a new user into the database
                 using (Context db = new Context())
                 {
                     UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
-                    // Check if user already exists
+
                     if (user == null)
                     {
-                        // Insert name into the profile table
                         db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
                         db.SaveChanges();
 
@@ -297,19 +229,13 @@ namespace Raffle.Controllers
                         return RedirectToLocal(returnUrl);
                     }
                     else
-                    {
                         ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
-                    }
                 }
-            }
 
             ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(provider).DisplayName;
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
-
-        //
-        // GET: /Account/ExternalLoginFailure
 
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
@@ -350,13 +276,9 @@ namespace Raffle.Controllers
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
-            {
                 return Redirect(returnUrl);
-            }
             else
-            {
                 return RedirectToAction("Index", "Home");
-            }
         }
 
         public enum ManageMessageId
@@ -385,8 +307,6 @@ namespace Raffle.Controllers
 
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
-            // See http://go.microsoft.com/fwlink/?LinkID=177550 for
-            // a full list of status codes.
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:

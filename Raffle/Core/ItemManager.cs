@@ -23,7 +23,6 @@ namespace Raffle.Core
 
                 Raffle.Models.Raffle raffle = ExecuteTransaction(buyer);
 
-                //If there are no more raffles to sell
                 if (!this.item.CanBuy)
                     SetWinner();
 
@@ -33,8 +32,8 @@ namespace Raffle.Core
 
         private void SetWinner()
         {
-            var selectedRaffle = this.item.Raffles.OrderBy(r => Guid.NewGuid()).First();
-            var otherRaffles = this.item.Raffles.Where(r => r.RaffleNumber != selectedRaffle.RaffleNumber);
+            Raffle.Models.Raffle selectedRaffle = this.item.Raffles.OrderBy(r => Guid.NewGuid()).First();
+            IEnumerable<Raffle.Models.Raffle> otherRaffles = this.item.Raffles.Where(r => r.RaffleNumber != selectedRaffle.RaffleNumber);
 
             selectedRaffle.IsPrized = true;
 

@@ -38,14 +38,14 @@
             if (Model.CanBuy)
             { 
             <h2>raffling
-                        <small>currently selling raffles</small>
+                <small>currently selling raffles</small>
             </h2>
             <span class="lead">when the last raffle has been sold we will provide you with more information</span>
             }
             else
             {
             <h2>sold
-                    <small>the winner has been selected</small>
+                <small>the winner has been selected</small>
             </h2>
             <span class="lead">we sent you an email with the information of the winner to allow you to proceed with the shipping</span>
             }
@@ -57,7 +57,7 @@
                 if (hasBought && user.Raffles.Any(r => r.ItemId == Model.Id && r.IsPrized == true))
                 {
             <h2>congratulations
-                    <small>you have won this item</small>
+                <small>you have won this item</small>
             </h2>
             <span class="lead">we have already contacted the seller with your information regarding the shipping process</span>
                 }
@@ -115,12 +115,12 @@ else
     </div>
 }
 
-@if (((IQueryable<Raffle.Models.Item>)ViewBag.Related).Any())
+@if (((IList<Raffle.Models.Item>)ViewBag.Related).Count > 0)
 {
     <h2>related
         <small>items in the same category</small>
     </h2>
-    foreach (var item in (IQueryable<Raffle.Models.Item>)@ViewBag.Related)
+    foreach (var item in (IList<Raffle.Models.Item>)@ViewBag.Related)
     {
         Html.RenderPartial("_ItemPreviewPartial", item);
     }

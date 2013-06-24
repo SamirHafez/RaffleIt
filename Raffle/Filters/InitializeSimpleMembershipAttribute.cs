@@ -17,7 +17,6 @@ namespace Raffle.Filters
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            // Ensure ASP.NET Simple Membership is initialized only once per app start
             LazyInitializer.EnsureInitialized(ref _initializer, ref _isInitialized, ref _initializerLock);
         }
 
@@ -30,13 +29,8 @@ namespace Raffle.Filters
                 try
                 {
                     using (var context = new Context())
-                    {
                         if (!context.Database.Exists())
-                        {
-                            // Create the SimpleMembership database without Entity Framework migration schema
                             ((IObjectContextAdapter)context).ObjectContext.CreateDatabase();
-                        }
-                    }
 
                     WebSecurity.InitializeDatabaseConnection("Context", "UserProfile", "UserId", "UserName", autoCreateTables: true);
                 }

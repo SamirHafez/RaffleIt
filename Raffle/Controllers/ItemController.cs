@@ -8,27 +8,23 @@ using System.Web.Mvc;
 using Raffle.Models;
 using Raffle.Core;
 using Raffle.App_Start;
+using PayPal.ButtonManager;
 
 namespace Raffle.Controllers
 {
     [Authorize]
-    public class ItemController : Controller
+    public class ItemController : BaseController
     {
-        private Context db = new Context();
-
-        //
-        // GET: /Item/
-
         public ActionResult Index(int id)
         {
-            ViewBag.User = db.UserProfiles.First(u => u.UserName == User.Identity.Name);
+            ViewBag.User = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
-            Item item = db.Items.Find(id);
+            Item item = Context.Items.Find(id);
 
-            ViewBag.Related = db.Items.Where(i => i.Category == item.Category && i.Id != item.Id)
-                                      .OrderByDescending(i => i.CreatedAt)
-                                      .Take(6)
-                                      .AsQueryable();
+            ViewBag.Related = Context.Items.Where(i => i.Category == item.Category && i.Id != item.Id)
+                                           .OrderByDescending(i => i.CreatedAt)
+                                           .Take(6)
+                                           .ToList();
 
             return View(item);
         }
@@ -57,29 +53,23 @@ namespace Raffle.Controllers
         //    return RedirectToAction("Index", id);
         //}
 
-        //
-        // GET: /Item/Create
-
         public ActionResult Create()
         {
             return View();
         }
-
-        //
-        // POST: /Item/Create
 
         [HttpPost]
         public ActionResult Create(Item item)
         {
             if (ModelState.IsValid)
             {
-                var user = db.UserProfiles.First(u => u.UserName == User.Identity.Name);
+                UserProfile user = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
                 item.CreatedAt = DateTime.Now;
                 user.Items.Add(item);
-                db.SaveChanges();
+                Context.SaveChanges();
 
-                var buyButton = PayPal.ButtonManager.BuyNowButton.Create(new PayPal.ButtonManager.HtmlButtonVariables 
+                ButtonManagerResponse buyButton = BuyNowButton.Create(new HtmlButtonVariables 
                 {
                     Business = PaypalConfig.BusinessEmail,
                     Quantity = "1",
@@ -89,18 +79,11 @@ namespace Raffle.Controllers
                 });
 
                 item.PaypalCode = buyButton.WebSiteCode;
-                db.SaveChanges();
 
                 return RedirectToAction("Index", new { id = item.Id });
             }
 
             return View(item);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }
