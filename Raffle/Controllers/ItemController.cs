@@ -21,7 +21,7 @@ namespace Raffle.Controllers
 
             Item item = Context.Items.Find(id);
 
-            ViewBag.Related = Context.Items.Where(i => i.Category == item.Category && i.Id != item.Id)
+            ViewBag.Related = Context.Items.Where(i => i.CategoryId == item.CategoryId && i.Id != item.Id)
                                            .OrderByDescending(i => i.CreatedAt)
                                            .Take(6)
                                            .ToList();
@@ -55,6 +55,8 @@ namespace Raffle.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.Categories = Context.Categories.ToList();
+
             return View();
         }
 

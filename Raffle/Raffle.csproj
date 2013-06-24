@@ -313,6 +313,7 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\Latest.cshtml" />
     <Content Include="Views\Home\Ending.cshtml" />
+    <Content Include="Views\Home\Category.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -35,7 +35,13 @@
                             </li>
                             <li class="divider"></li>
                             <li class="nav-header">Categories</li>
-
+                            @{
+                                var categories = new Raffle.Models.Context().Categories.Select(c => new { c.Id, c.Name }).ToList();
+                            }
+                            @foreach (var category in categories)
+                            {
+                                <li>@Html.ActionLink(category.Name, "Category", "Home", new { id = category.Id }, null)</li> 
+                            }
                             <li class="divider"></li>
                             <li>
                                 <a href="#">FAQ</a>

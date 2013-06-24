@@ -27,7 +27,7 @@ else
     <div class="well">
         <h3>no raffles
             <small>you haven't purchased any raffles yet</small>
-            @Html.ActionLink("see what's new", "Index", "Home", null, new { @class = "btn btn-primary btn-large" })
+            @Html.ActionLink("see what's new", "Index", "Home", null, new { @class = "btn btn-primary btn-large pull-right span3" })
         </h3>
     </div>
 }
@@ -54,7 +54,7 @@ else
     <div class="well">
         <h3>no items
             <small>you haven't sold any items yet</small>
-            @Html.ActionLink("sell an item", "Create", "Item", null, new { @class = "btn btn-primary btn-large" })
+            @Html.ActionLink("sell an item", "Create", "Item", null, new { @class = "btn btn-primary btn-large pull-right span3" })
         </h3>
     </div>
 }

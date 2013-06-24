@@ -42,10 +42,23 @@ namespace Raffle.Controllers
         {
             UserProfile user = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
-            IList<Item> results = Context.Items.Where(i => i.Name.Contains(query) || i.Description.Contains(query) || i.Category.Contains(query))
+            IList<Item> results = Context.Items.Where(i => i.Name.Contains(query) || i.Description.Contains(query) || i.Category.Name.Contains(query))
                                                .OrderByDescending(i => i.CreatedAt)
                                                .Skip(skip)
-                                               .Take(18)
+                                               .Take(15)
+                                               .ToList();
+
+            return View(results);
+        }
+
+        public ActionResult Category(int id, int skip = 0)
+        {
+            ViewBag.Category = Context.Categories.Find(id);
+
+            IList<Item> results = Context.Items.Where(i => i.ClosedAt != null && i.CategoryId == id)
+                                               .OrderByDescending(i => i.CreatedAt)
+                                               .Skip(skip)
+                                               .Take(15)
                                                .ToList();
 
             return View(results);

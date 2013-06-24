@@ -22,9 +22,6 @@ namespace Raffle.Models
         public string Description { get; set; }
 
         [Required(ErrorMessage = "*")]
-        public string Category { get; set; }
-
-        [Required(ErrorMessage = "*")]
         [DataType(DataType.Currency)]
         public int Price { get; set; }
 
@@ -42,6 +39,12 @@ namespace Raffle.Models
 
         [ForeignKey("Owner")]
         public int OwnerId { get; set; }
+
+        [ForeignKey("Category")]
+        [Required(ErrorMessage = "*")]
+        public int CategoryId { get; set; }
+
+        public virtual Category Category { get; set; }
 
         public virtual UserProfile Owner { get; set; }
 
@@ -81,5 +84,16 @@ namespace Raffle.Models
         public virtual UserProfile UserProfile { get; set; }
 
         public virtual Item Item { get; set; }
+    }
+
+    [Table("Category")]
+    public class Category
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        public string Name { get; set; }
     }
 }

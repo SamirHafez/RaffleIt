@@ -10,6 +10,7 @@ namespace Raffle.Models
     {
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
