@@ -10,16 +10,30 @@
 
 @if (Model.Count > 0)
 {
-    foreach (var item in Model) 
-    {
-        Html.RenderPartial("_ItemPreviewPartial", item);
-    }
+    <ul class="thumbnails">
+        @foreach (var item in Model)
+        {
+            Html.RenderPartial("_ItemPreviewPartial", item);
+        }
+    </ul>
+    
+    <div class="pagination pagination-centered">
+        <ul>
+            @if (((bool)ViewBag.HasLess))
+            { 
+                <li>@Html.ActionLink("prev", "Category", new { page = (int)ViewBag.Page - 1 })</li>
+            }
+            @if (((bool)ViewBag.HasMore))
+            { 
+                <li>@Html.ActionLink("next", "Category", new { page = (int)ViewBag.Page + 1 })</li>
+            }
+        </ul>
+    </div>
 }
-else 
+else
 {
     <div class="well">
-        <h1>
-            no results
+        <h1>no results
             <small>there is nothing to show in this category</small>
         </h1>
     </div>

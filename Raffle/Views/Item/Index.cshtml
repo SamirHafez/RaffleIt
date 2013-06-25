@@ -40,7 +40,7 @@
             <h2>raffling
                 <small>currently selling raffles</small>
             </h2>
-            <span class="lead">when the last raffle has been sold we will provide you with more information</span>
+            <span class="lead">when the last raffle has been sold we will provide you with information regarding the winner</span>
             }
             else
             {
@@ -117,9 +117,9 @@ else
 
 @if (((IList<Raffle.Models.Item>)ViewBag.Related).Count > 0)
 {
-    <h2>related
+    <h3>related
         <small>items in the same category</small>
-    </h2>
+    </h3>
     foreach (var item in (IList<Raffle.Models.Item>)@ViewBag.Related)
     {
         Html.RenderPartial("_ItemPreviewPartial", item);

@@ -15,10 +15,12 @@ namespace Raffle.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage="*")]
+        [MaxLength(40)]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "*")]
         [DataType(DataType.MultilineText)]
+        [MaxLength(200)]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "*")]

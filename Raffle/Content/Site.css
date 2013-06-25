@@ -1,4 +1,8 @@
-﻿/* Sticky footer styles
+﻿textarea{
+    resize: none;
+}
+
+/* Sticky footer styles
       -------------------------------------------------- */
 
 html, body {
