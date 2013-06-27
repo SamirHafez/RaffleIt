@@ -9,22 +9,23 @@ using Raffle.Models;
 using Raffle.Core;
 using Raffle.App_Start;
 using PayPal.ButtonManager;
+using System.Threading.Tasks;
 
 namespace Raffle.Controllers
 {
     [Authorize]
     public class ItemController : BaseController
     {
-        public ActionResult Index(int id)
+        public async Task<ActionResult> Index(int id)
         {
             ViewBag.User = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
 
-            Item item = Context.Items.Find(id);
+            Item item = await Context.Items.FindAsync(id);
 
-            ViewBag.Related = Context.Items.Where(i => i.CategoryId == item.CategoryId && i.Id != item.Id)
-                                           .OrderByDescending(i => i.CreatedAt)
-                                           .Take(6)
-                                           .ToList();
+            ViewBag.Related = await Context.Items.Where(i => i.CategoryId == item.CategoryId && i.Id != item.Id)
+                                                 .OrderByDescending(i => i.CreatedAt)
+                                                 .Take(6)
+                                                 .ToListAsync();
 
             return View(item);
         }
@@ -53,19 +54,19 @@ namespace Raffle.Controllers
         //    return RedirectToAction("Index", id);
         //}
 
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            ViewBag.Categories = Context.Categories.ToList();
+            ViewBag.Categories = await Context.Categories.ToListAsync();
 
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(Item item)
+        public async Task<ActionResult> Create(Item item)
         {
             if (ModelState.IsValid)
             {
-                UserProfile user = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+                UserProfile user = await Context.UserProfiles.FirstAsync(u => u.UserName == User.Identity.Name);
 
                 item.CreatedAt = DateTime.Now;
                 user.Items.Add(item);

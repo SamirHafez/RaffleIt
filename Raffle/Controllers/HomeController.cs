@@ -1,7 +1,10 @@
 ﻿using Raffle.Models;
 using System;
+using System.Data;
+using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,73 +14,73 @@ namespace Raffle.Controllers
     public class HomeController : BaseController
     {
         [AllowAnonymous]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             if (!Request.IsAuthenticated)
                 return View();
 
-            UserProfile user = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+            UserProfile user = await Context.UserProfiles.FirstAsync(u => u.UserName == User.Identity.Name);
 
-            IList<Item> latest = Context.Items.OrderByDescending(i => i.CreatedAt)
-                                              .Take(18)
-                                              .ToList();
+            IList<Item> latest = await Context.Items.OrderByDescending(i => i.CreatedAt)
+                                                    .Take(18)
+                                                    .ToListAsync();
 
             return View("Latest", latest);
         }
 
-        public ActionResult Ending()
+        public async Task<ActionResult> Ending()
         {
-            UserProfile user = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+            UserProfile user = await Context.UserProfiles.FirstAsync(u => u.UserName == User.Identity.Name);
 
-            IList<Item> ending = Context.Items.Where(i => i.ClosedAt == null)
-                                              .OrderBy(i => i.TotalRaffleCount - i.Raffles.Count)
-                                              .Take(18)
-                                              .ToList();
+            IList<Item> ending = await Context.Items.Where(i => i.ClosedAt == null)
+                                                    .OrderBy(i => i.TotalRaffleCount - i.Raffles.Count)
+                                                    .Take(18)
+                                                    .ToListAsync();
 
             return View(ending);
         }
 
-        public ActionResult Search(string query, int page = 0)
+        public async Task<ActionResult> Search(string query, int page = 0)
         {
-            UserProfile user = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+            UserProfile user = await Context.UserProfiles.FirstAsync(u => u.UserName == User.Identity.Name);
 
-            ViewBag.HasMore = Context.Items.Where(i => i.Name.Contains(query) || i.Description.Contains(query) || i.Category.Name.Contains(query))
-                                           .OrderByDescending(i => i.CreatedAt)
-                                           .Skip((page * 18) + 18)
-                                           .Any();
+            ViewBag.HasMore = await Context.Items.Where(i => i.Name.Contains(query) || i.Description.Contains(query) || i.Category.Name.Contains(query))
+                                                 .OrderByDescending(i => i.CreatedAt)
+                                                 .Skip((page * 18) + 18)
+                                                 .AnyAsync();
 
             ViewBag.HasLess = page != 0;
 
             ViewBag.Page = page;
 
-            IList<Item> results = Context.Items.Where(i => i.Name.Contains(query) || i.Description.Contains(query) || i.Category.Name.Contains(query))
-                                               .OrderByDescending(i => i.CreatedAt)
-                                               .Skip(page * 18)
-                                               .Take(18)
-                                               .ToList();
+            IList<Item> results = await Context.Items.Where(i => i.Name.Contains(query) || i.Description.Contains(query) || i.Category.Name.Contains(query))
+                                                     .OrderByDescending(i => i.CreatedAt)
+                                                     .Skip(page * 18)
+                                                     .Take(18)
+                                                     .ToListAsync();
 
             return View(results);
         }
 
-        public ActionResult Category(int id, int page = 0)
+        public async Task<ActionResult> Category(int id, int page = 0)
         {
-            ViewBag.Category = Context.Categories.Find(id);
+            ViewBag.Category = await Context.Categories.FindAsync(id);
 
-            ViewBag.HasMore = Context.Items.Where(i => i.ClosedAt == null && i.CategoryId == id)
-                                           .OrderByDescending(i => i.CreatedAt)
-                                           .Skip((page * 18) + 18)
-                                           .Any();
+            ViewBag.HasMore = await Context.Items.Where(i => i.ClosedAt == null && i.CategoryId == id)
+                                                 .OrderByDescending(i => i.CreatedAt)
+                                                 .Skip((page * 18) + 18)
+                                                 .AnyAsync();
 
             ViewBag.HasLess = page != 0;
 
             ViewBag.Page = page;
 
 
-            IList<Item> results = Context.Items.Where(i => i.ClosedAt == null && i.CategoryId == id)
-                                               .OrderByDescending(i => i.CreatedAt)
-                                               .Skip(page * 18)
-                                               .Take(18)
-                                               .ToList();
+            IList<Item> results = await Context.Items.Where(i => i.ClosedAt == null && i.CategoryId == id)
+                                                     .OrderByDescending(i => i.CreatedAt)
+                                                     .Skip(page * 18)
+                                                     .Take(18)
+                                                     .ToListAsync();
 
             return View(results);
         }
