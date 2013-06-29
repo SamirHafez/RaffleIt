@@ -27,12 +27,6 @@ namespace Raffle.Models
         [DataType(DataType.Currency)]
         public int Price { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [Display(Name = "Number of Raffles")]
-        public int TotalRaffleCount { get; set; }
-
-        public string PaypalCode { get; set; }
-
         public DateTime CreatedAt { get; set; }
 
         public DateTime? ClosedAt { get; set; }
@@ -54,12 +48,7 @@ namespace Raffle.Models
 
         public bool CanBuy
         {
-            get { return Raffles.Count != TotalRaffleCount; }
-        }
-
-        public decimal RafflePrice
-        {
-            get { return decimal.Round((decimal)Price / TotalRaffleCount, 2); }
+            get { return Raffles.Count != Price; }
         }
 
         public Item()
@@ -71,6 +60,10 @@ namespace Raffle.Models
     [Table("Raffle")]
     public class Raffle 
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
         [ForeignKey("UserProfile")]
         public int UserProfileId { get; set; }
 

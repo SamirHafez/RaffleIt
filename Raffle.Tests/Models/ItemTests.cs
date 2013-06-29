@@ -40,7 +40,6 @@ namespace Raffle.Tests.Models
                         Name = "p1",
                         Description = "p1 description",
                         Price = 100,
-                        TotalRaffleCount = 100,
                         OwnerId = account.UserId
                     };
 
@@ -50,7 +49,6 @@ namespace Raffle.Tests.Models
 
                     Assert.True(item.Id > 0);
                     Assert.Equal(100, item.Price);
-                    Assert.Equal(100, item.TotalRaffleCount);
                     Assert.Equal(account.UserId, item.OwnerId);
                 }
             }

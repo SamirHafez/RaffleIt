@@ -39,6 +39,8 @@ namespace Raffle.Models
             }
         }
 
+        public int UnusedRaffles { get; set; }
+
         public virtual ICollection<Raffle> Raffles { get; set; }
 
         public virtual ICollection<Item> Items { get; set; }

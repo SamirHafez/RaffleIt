@@ -5,9 +5,11 @@
         user = ctx.UserProfiles.FirstOrDefault(up => up.UserName == User.Identity.Name);
     }
     string reputation = string.Empty;
+    string raffles = string.Empty;
     if (user != null)
     {
         reputation = user.Reputation < 0 ? "badge-important" : user.Reputation > 0 ? "badge-success" : string.Empty;
+        raffles = user.UnusedRaffles > 2 ? "badge-success" : user.UnusedRaffles > 0 ? "badge-warning" : "badge-important"; 
     }
 }
 
@@ -23,6 +25,7 @@
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 @User.Identity.Name
+                <span class="badge @raffles">@user.UnusedRaffles</span>
                 <span class="badge @reputation">@user.Reputation</span>
                 <b class="caret"></b>
             </a>

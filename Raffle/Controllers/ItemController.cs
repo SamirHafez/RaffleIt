@@ -18,7 +18,7 @@ namespace Raffle.Controllers
     {
         public async Task<ActionResult> Index(int id)
         {
-            ViewBag.User = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+            ViewBag.User = await Context.UserProfiles.FirstAsync(u => u.UserName == User.Identity.Name);
 
             Item item = await Context.Items.FindAsync(id);
 
@@ -28,6 +28,49 @@ namespace Raffle.Controllers
                                                  .ToListAsync();
 
             return View(item);
+        }
+
+        public async Task<ActionResult> Purchase(int id)
+        {
+            UserProfile user = Context.UserProfiles.First(u => u.UserName == User.Identity.Name);
+
+            if(user.UnusedRaffles == 0)
+                return RedirectToAction("Index", new { id });
+
+            Item item = await Context.Items.FindAsync(id);
+
+            lock (item)
+            {
+                int mostRecentRaffleNumber = item.Raffles.OrderByDescending(r => r.RaffleNumber)
+                                                         .Select(r => r.RaffleNumber)
+                                                         .FirstOrDefault();
+
+                item.Raffles.Add(new Raffle.Models.Raffle 
+                {
+                    UserProfileId = user.UserId,
+                    PurchasedAt = DateTime.Now,
+                    RaffleNumber = mostRecentRaffleNumber + 1
+                });
+
+                user.UnusedRaffles--;
+
+                Context.SaveChanges();
+
+                if (item.Raffles.Count == item.Price)
+                {
+                    Raffle.Models.Raffle selectedRaffle = item.Raffles.OrderBy(r => Guid.NewGuid()).First();
+                    IEnumerable<Raffle.Models.Raffle> otherRaffles = item.Raffles.Where(r => r.RaffleNumber != selectedRaffle.RaffleNumber);
+
+                    selectedRaffle.IsPrized = true;
+
+                    foreach (var raffle in otherRaffles)
+                        raffle.IsPrized = false;
+
+                    item.ClosedAt = DateTime.Now;
+                }
+            }
+
+            return RedirectToAction("Index", new { id });
         }
 
         //[HttpPost]
@@ -71,17 +114,6 @@ namespace Raffle.Controllers
                 item.CreatedAt = DateTime.Now;
                 user.Items.Add(item);
                 Context.SaveChanges();
-
-                ButtonManagerResponse buyButton = BuyNowButton.Create(new HtmlButtonVariables 
-                {
-                    Business = PaypalConfig.BusinessEmail,
-                    Quantity = "1",
-                    Amount = item.RafflePrice.ToString().Replace(",", "."),
-                    CurrencyCode = "EUR",
-                    ItemName = string.Format("Raffle_{0}", item.Id)
-                });
-
-                item.PaypalCode = buyButton.WebSiteCode;
 
                 return RedirectToAction("Index", new { id = item.Id });
             }

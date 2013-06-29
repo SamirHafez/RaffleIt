@@ -38,7 +38,6 @@ namespace Raffle.Tests.Core
                     Name = "p1",
                     Description = "p1 description",
                     Price = 100,
-                    TotalRaffleCount = 100,
                     OwnerId = owner.UserId
                 };
             }
@@ -58,7 +57,6 @@ namespace Raffle.Tests.Core
             {
                 Setup();
 
-                this.item.TotalRaffleCount = 100;
                 this.item.Raffles = new Raffle.Models.Raffle[100].ToList();
 
                 var im = new ItemManager(item);
@@ -72,7 +70,6 @@ namespace Raffle.Tests.Core
                 Setup();
 
                 this.item.Price = 100;
-                this.item.TotalRaffleCount = 100;
 
                 var im = new ItemManager(item);
 
@@ -85,7 +82,6 @@ namespace Raffle.Tests.Core
                 Setup();
 
                 this.item.Price = 100;
-                this.item.TotalRaffleCount = 100;
 
                 var im = new ItemManager(item);
 
@@ -105,7 +101,6 @@ namespace Raffle.Tests.Core
                 Setup();
 
                 this.item.Price = 1;
-                this.item.TotalRaffleCount = 1;
 
                 var im = new ItemManager(item);
 

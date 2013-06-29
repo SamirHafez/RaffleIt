@@ -25,6 +25,8 @@ namespace Raffle.Controllers
                                                     .Take(18)
                                                     .ToListAsync();
 
+            ViewBag.User = user;
+
             return View("Latest", latest);
         }
 
@@ -33,9 +35,11 @@ namespace Raffle.Controllers
             UserProfile user = await Context.UserProfiles.FirstAsync(u => u.UserName == User.Identity.Name);
 
             IList<Item> ending = await Context.Items.Where(i => i.ClosedAt == null)
-                                                    .OrderBy(i => i.TotalRaffleCount - i.Raffles.Count)
+                                                    .OrderBy(i => i.Price - i.Raffles.Count)
                                                     .Take(18)
                                                     .ToListAsync();
+
+            ViewBag.User = user;
 
             return View(ending);
         }
@@ -52,6 +56,8 @@ namespace Raffle.Controllers
             ViewBag.HasLess = page != 0;
 
             ViewBag.Page = page;
+
+            ViewBag.User = user;
 
             IList<Item> results = await Context.Items.Where(i => i.Name.Contains(query) || i.Description.Contains(query) || i.Category.Name.Contains(query))
                                                      .OrderByDescending(i => i.CreatedAt)

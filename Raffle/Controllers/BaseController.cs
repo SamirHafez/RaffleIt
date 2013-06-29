@@ -20,7 +20,7 @@ namespace Raffle.Controllers
         protected override void Dispose(bool disposing)
         {
             using (Context)
-                Context.SaveChangesAsync();
+                Context.SaveChanges();
             base.Dispose(disposing);
         }
     }

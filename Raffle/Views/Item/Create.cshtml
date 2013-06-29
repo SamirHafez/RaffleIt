@@ -79,19 +79,6 @@
                 </div>
             </div>
         </div>
-        <div class="control-group">
-            <div class="controls">
-                <div class="input-prepend input-append">
-                    <span class="add-on">
-                        <i class="icon-pencil"></i>
-                    </span>
-                    @Html.DropDownListFor(model => model.TotalRaffleCount, new[] { string.Empty, "5", "10", "20", "30", "40", "50" }.Select(i => new SelectListItem { Text = i, Value = i }), new { placeholder = "raffle count" })
-                    <span class="add-on">
-                        @Html.ValidationMessageFor(model => model.TotalRaffleCount)
-                    </span>
-                </div>
-            </div>
-        </div>
     </fieldset>
     <p>
         <input type="submit" class="btn btn-primary btn-large" value="sell" />

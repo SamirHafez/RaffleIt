@@ -19,8 +19,6 @@ namespace Raffle.Models
 
             modelBuilder.Entity<Item>().HasMany(i => i.Raffles).WithRequired(r => r.Item);
 
-            modelBuilder.Entity<Raffle>().HasKey(r => new { r.UserProfileId, r.ItemId });
-
             base.OnModelCreating(modelBuilder);
         }
     }

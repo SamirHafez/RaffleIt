@@ -59,7 +59,7 @@ namespace Raffle.Controllers
             if (ModelState.IsValid)
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { UnusedRaffles = 0 });
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
