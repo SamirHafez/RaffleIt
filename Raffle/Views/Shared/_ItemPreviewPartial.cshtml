@@ -14,13 +14,13 @@
                 if (Model.Raffles.Any(r => r.IsPrized.GetValueOrDefault() && r.UserProfileId == user.UserId))
                 {
                 <div class="alert alert-success">
-                    <strong>Prized raffle!</strong>
+                    <strong>you won</strong>
                 </div>
                 }
                 else
                 { 
                     <div class="alert alert-info">
-                        <strong>item raffled</strong>
+                        <strong>raffled</strong>
                     </div>
                 }
             }

@@ -70,9 +70,11 @@ namespace Raffle.Controllers
 
         public async Task<ActionResult> Category(int id, int page = 0)
         {
+            ViewBag.User = await Context.UserProfiles.FirstAsync(u => u.UserName == User.Identity.Name);
+
             ViewBag.Category = await Context.Categories.FindAsync(id);
 
-            ViewBag.HasMore = await Context.Items.Where(i => i.ClosedAt == null && i.CategoryId == id)
+            ViewBag.HasMore = await Context.Items.Where(i => i.CategoryId == id)
                                                  .OrderByDescending(i => i.CreatedAt)
                                                  .Skip((page * 18) + 18)
                                                  .AnyAsync();
@@ -82,7 +84,7 @@ namespace Raffle.Controllers
             ViewBag.Page = page;
 
 
-            IList<Item> results = await Context.Items.Where(i => i.ClosedAt == null && i.CategoryId == id)
+            IList<Item> results = await Context.Items.Where(i => i.CategoryId == id)
                                                      .OrderByDescending(i => i.CreatedAt)
                                                      .Skip(page * 18)
                                                      .Take(18)
