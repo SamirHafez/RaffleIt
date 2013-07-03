@@ -72,7 +72,7 @@
                 <div class="input-append">
                     <span class="add-on">€
                     </span>
-                    @Html.TextBoxFor(m => m.Price, new { placeholder = "price", type = "number" })
+                    @Html.EditorFor(m => m.Price, new { placeholder = "price" })
                     <span class="add-on">
                         @Html.ValidationMessageFor(model => model.Price)
                     </span>

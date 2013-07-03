@@ -136,6 +136,8 @@ namespace Raffle.Controllers
                 return RedirectToAction("Index", new { id = item.Id });
             }
 
+            ViewBag.Categories = await Context.Categories.ToListAsync();
+
             return View(item);
         }
     }

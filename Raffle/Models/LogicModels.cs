@@ -25,6 +25,7 @@ namespace Raffle.Models
 
         [Required(ErrorMessage = "*")]
         [DataType(DataType.Currency)]
+        [Range(5, 500)]
         public int Price { get; set; }
 
         public DateTime CreatedAt { get; set; }
