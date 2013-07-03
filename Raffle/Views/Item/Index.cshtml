@@ -6,13 +6,16 @@
     var totalRaffles = Model.Price + (int)(Model.Price * 0.40);
     var rafflesLeft = totalRaffles - Model.Raffles.Count;
     var isOwner = Model.OwnerId == user.UserId;
+    var ownerReputation = Model.Owner.Reputation < 0 ? "badge-important" : Model.Owner.Reputation > 0 ? "badge-success" : string.Empty;
 }
 
 <h1>
     @Model.Name
     @if (!isOwner)
     { 
-        <small>from <strong>@Model.Owner.UserName</strong></small>
+        <small>from <strong>@Model.Owner.UserName</strong>
+            <span class="badge @ownerReputation">@Model.Owner.Reputation</span>
+        </small>
     }
 </h1>
 <h2 class="lead">@Model.Description</h2>
@@ -136,11 +139,14 @@
             <h2>good luck
                     <small>raffle purchased</small>
             </h2>
-            <span class="lead">you have already purchased <strong>@hasBought</strong> @if (hasBought != 1)
+            <span class="lead">you have purchased <strong>@hasBought</strong> @if (hasBought != 1)
                                                                                       {<span>raffles</span>}
                                                                                       else
                                                                                       {<span>raffle</span>}</span>
+                                                                                      if (user.UnusedRaffles > 0)
+                                                                                      { 
             @Html.ActionLink("buy another", "Purchase", new { id = Model.Id }, new { @class = "btn btn-primary btn-large pull-right" })
+                                                                                      }
                 }
                 else
                 {

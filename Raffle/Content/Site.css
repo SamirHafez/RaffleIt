@@ -38,5 +38,9 @@ footer {
 }
 
 span.badge, span.label{
+    vertical-align: middle;
+}
+
+a > span.badge, a > span.label{
     vertical-align: top;
 }

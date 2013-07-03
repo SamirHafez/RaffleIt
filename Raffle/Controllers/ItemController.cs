@@ -91,30 +91,6 @@ namespace Raffle.Controllers
             return RedirectToAction("Index", new { id });
         }
 
-        //[HttpPost]
-        //public ActionResult Index(int id)
-        //{
-        //    Item item = db.Items.Find(id);
-        //    UserProfile user = db.UserProfiles.First(u => u.UserName == User.Identity.Name);
-
-        //    if(!ModelState.IsValid)
-        //        return RedirectToAction("Index", id);
-
-        //    var im = new ItemManager(item);
-
-        //    try
-        //    {
-        //        var raffle = im.BuyRaffle(user);
-        //        db.SaveChanges();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        ModelState.AddModelError(string.Empty, e);
-        //    }
-
-        //    return RedirectToAction("Index", id);
-        //}
-
         public async Task<ActionResult> Create()
         {
             ViewBag.Categories = await Context.Categories.ToListAsync();
