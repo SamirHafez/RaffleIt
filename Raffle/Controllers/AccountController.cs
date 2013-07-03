@@ -280,6 +280,11 @@ namespace Raffle.Controllers
         {
             UserProfile user = Context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
 
+            if (user == null || user.Transactions.Any(p => p.TransId == tx))
+                return View(false);
+
+            amt = amt.Replace('.', ',');
+
             var pdtIdentityToken = ConfigurationManager.AppSettings["PDTIdentityToken"];
             var uri = string.Format("https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_notify-synch&tx={0}&at={1}", tx, pdtIdentityToken);
 
@@ -287,14 +292,14 @@ namespace Raffle.Controllers
 
             string parsed = await response.Content.ReadAsStringAsync();
 
-            string[] split = parsed.Split(' ');
+            string[] split = parsed.Split('\n');
 
             string customValue = split.Skip(1).FirstOrDefault(pair => pair.StartsWith("custom="));
-            string paymentGross = split.Skip(1).FirstOrDefault(pair => pair.StartsWith("payment_gross="));
+            string mcGross = split.Skip(1).FirstOrDefault(pair => pair.StartsWith("mc_gross="));
 
-            if (split[0] == "SUCCESS" && customValue != null && HttpUtility.HtmlDecode(customValue.Substring(customValue.IndexOf('=') + 1)) == user.UserName)
+            if (split[0] == "SUCCESS" && customValue != null && HttpUtility.UrlDecode(customValue.Substring(customValue.IndexOf('=') + 1)) == user.UserName)
             {
-                switch (paymentGross.Substring(paymentGross.IndexOf('=') + 1))
+                switch (mcGross.Substring(mcGross.IndexOf('=') + 1))
                 {
                     case "5.00":
                         user.UnusedRaffles += 5;
@@ -306,6 +311,8 @@ namespace Raffle.Controllers
                         user.UnusedRaffles += 15;
                         break;
                 }
+                user.Transactions.Add(new Raffle.Models.Transaction { TransId = tx, Status = st, Amount = decimal.Parse(amt) });
+                Context.SaveChanges();
                 return View(true);
             }
             else

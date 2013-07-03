@@ -52,6 +52,8 @@ namespace Raffle.Models
 
         public virtual ICollection<Item> Items { get; set; }
 
+        public virtual ICollection<Transaction> Transactions { get; set; }
+
         public UserProfile()
         {
             Raffles = new List<Raffle>();

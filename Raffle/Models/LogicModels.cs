@@ -94,4 +94,26 @@ namespace Raffle.Models
         [Required(ErrorMessage = "*")]
         public string Name { get; set; }
     }
+
+    [Table("Transaction")]
+    public class Transaction
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [ForeignKey("Owner")]
+        public int OwnerId { get; set; }
+
+        [Required]
+        public string TransId { get; set; }
+
+        [Required]
+        public string Status { get; set; }
+
+        [Required]
+        public decimal Amount { get; set; }
+
+        public UserProfile Owner { get; set; }
+    }
 }
