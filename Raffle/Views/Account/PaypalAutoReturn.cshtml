@@ -1,0 +1,23 @@
+﻿@model bool
+@{
+    ViewBag.Title = "Paypal Return";
+}
+
+@if (Model)
+{
+    <h1>
+        success
+        <small>paypal confirmed your payment</small>
+    </h1>
+    
+    <div class="lead">you have been credited with the purchased package</div>
+}
+else 
+{
+    <h1>
+        failed
+        <small>paypal has not confirmed your payment</small>
+    </h1>
+    
+    <div class="lead">an error has occurred</div>
+}

@@ -317,6 +317,7 @@
     <Content Include="Views\Home\Latest.cshtml" />
     <Content Include="Views\Home\Ending.cshtml" />
     <Content Include="Views\Home\Category.cshtml" />
+    <Content Include="Views\Account\PaypalAutoReturn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

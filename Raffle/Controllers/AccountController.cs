@@ -10,6 +10,9 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using Raffle.Filters;
 using Raffle.Models;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Configuration;
 
 namespace Raffle.Controllers
 {
@@ -270,6 +273,43 @@ namespace Raffle.Controllers
 
             ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> PaypalAutoReturn(string tx, string st, string amt, string cc)
+        {
+            UserProfile user = Context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+            var pdtIdentityToken = ConfigurationManager.AppSettings["PDTIdentityToken"];
+            var uri = string.Format("https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_notify-synch&tx={0}&at={1}", tx, pdtIdentityToken);
+
+            HttpResponseMessage response = await new HttpClient().SendAsync(new HttpRequestMessage(HttpMethod.Post, uri));
+
+            string parsed = await response.Content.ReadAsStringAsync();
+
+            string[] split = parsed.Split(' ');
+
+            string customValue = split.Skip(1).FirstOrDefault(pair => pair.StartsWith("custom="));
+            string paymentGross = split.Skip(1).FirstOrDefault(pair => pair.StartsWith("payment_gross="));
+
+            if (split[0] == "SUCCESS" && customValue != null && customValue.Substring(customValue.IndexOf('=') + 1) == user.UserName)
+            {
+                switch (paymentGross)
+                {
+                    case "5.00":
+                        user.UnusedRaffles += 5;
+                        break;
+                    case "9.00":
+                        user.UnusedRaffles += 10;
+                        break;
+                    case "12.00":
+                        user.UnusedRaffles += 15;
+                        break;
+                }
+                return View(true);
+            }
+            else
+                return View(false);
         }
 
         #region Helpers
