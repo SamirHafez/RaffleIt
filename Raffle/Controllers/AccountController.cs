@@ -292,9 +292,9 @@ namespace Raffle.Controllers
             string customValue = split.Skip(1).FirstOrDefault(pair => pair.StartsWith("custom="));
             string paymentGross = split.Skip(1).FirstOrDefault(pair => pair.StartsWith("payment_gross="));
 
-            if (split[0] == "SUCCESS" && customValue != null && customValue.Substring(customValue.IndexOf('=') + 1) == user.UserName)
+            if (split[0] == "SUCCESS" && customValue != null && HttpUtility.HtmlDecode(customValue.Substring(customValue.IndexOf('=') + 1)) == user.UserName)
             {
-                switch (paymentGross)
+                switch (paymentGross.Substring(paymentGross.IndexOf('=') + 1))
                 {
                     case "5.00":
                         user.UnusedRaffles += 5;
