@@ -30,52 +30,52 @@
 <div class="row-fluid">
     <div class="span4">
         <h3>starter package</h3>
-        <ul class="thumbnails">
-            <li class="span2 tile">
-                <h1>5€</h1>
-                <h2>5 raffles</h2>
-            </li>
-        </ul>
-        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <form id="starter" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
             <input type="hidden" name="cmd" value="_s-xclick">
             <input type="hidden" name="hosted_button_id" value="M7DKN9NY42Y7E">
             <input type="hidden" name="custom" value="@User.Identity.Name"/>
-            <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-            <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+            <ul class="thumbnails">
+                <li class="span2 tile">
+                <a href="javascript:document.forms['starter'].submit();">
+                    <h1>5€</h1>
+                    <h2>5 raffles</h2>
+                </a>
+                </li>
+            </ul>
         </form>
 
     </div>
     <div class="span4">
         <h3>normal package</h3>
-        <ul class="thumbnails">
-            <li class="span2 tile">
-                <h1>9€</h1>
-                <h2>10 raffles</h2>
-            </li>
-        </ul>
-        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <form id="normal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
             <input type="hidden" name="cmd" value="_s-xclick">
             <input type="hidden" name="hosted_button_id" value="KAQP6E23WJVK6">
             <input type="hidden" name="custom" value="@User.Identity.Name"/>
-            <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-            <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            <ul class="thumbnails">
+                <li class="span2 tile">
+                <a href="javascript:document.forms['normal'].submit();">
+                    <h1>9€</h1>
+                    <h2>10 raffles</h2>
+                </a>
+                </li>
+            </ul>
         </form>
 
     </div>
     <div class="span4">
         <h3>heavy package</h3>
-        <ul class="thumbnails">
-            <li class="span2 tile">
-                <h1>12€</h1>
-                <h2>15 raffles</h2>
-            </li>
-        </ul>
-        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <form id="heavy" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
             <input type="hidden" name="cmd" value="_s-xclick">
             <input type="hidden" name="hosted_button_id" value="TSTEYXFWDP9MS">
             <input type="hidden" name="custom" value="@User.Identity.Name"/>
-            <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-            <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            <ul class="thumbnails">
+                <li class="span2 tile">
+                <a href="javascript:document.forms['heavy'].submit();">
+                    <h1>12€</h1>
+                    <h2>15 raffles</h2>
+                </a>
+                </li>
+            </ul>
         </form>
 
     </div>
