@@ -1,6 +1,7 @@
 ﻿@model Raffle.Models.Item
 @{
-    int rafflesLeft = Model.Price - Model.Raffles.Count;
+    var totalRaffles = Model.Price + (int)(Model.Price * 0.40);
+    var rafflesLeft = totalRaffles - Model.Raffles.Count;
     var user = ((Raffle.Models.UserProfile)ViewBag.User);
 }
 
@@ -13,24 +14,33 @@
             {
                 if (Model.Raffles.Any(r => r.IsPrized.GetValueOrDefault() && r.UserProfileId == user.UserId))
                 {
-                <div class="alert alert-success">
-                    <strong>you won</strong>
-                </div>
+                <h5>
+                    <span class="label label-success">you won</span>
+                </h5>
                 }
                 else
-                { 
-                    <div class="alert alert-info">
-                        <strong>raffled</strong>
-                    </div>
+                {
+                    if (Model.Raffles.Any(r => r.UserProfileId == user.UserId))
+                    { 
+                <h5>
+                    <span class="label label-important">you lost</span>
+                </h5>
+                    }
+                    else
+                    { 
+                <h5>
+                    <span class="label label">item raffled</span>
+                </h5>
+                    }
                 }
             }
             else
             { 
                 <h5>
-                    <span class="badge badge-info">@rafflesLeft</span> @if (rafflesLeft != 1)
-                                                                       {<span>raffles</span>}
-                                                                       else
-                                                                       {<span>raffle</span>} left
+                    <span class="badge badge-info">@rafflesLeft @if (rafflesLeft != 1)
+                                                                            {<span>raffles</span>}
+                                                                            else
+                                                                            {<span>raffle</span>} left
                 </h5>
             }
             @Html.ActionLink("View", "Index", "Item", new { id = Model.Id }, new { @class = "btn btn-primary" })

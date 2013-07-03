@@ -7,9 +7,16 @@
         <small>Almost raffled</small>
 </h1>
 
+@if (Model.Count != 0)
+{ 
 <ul class="thumbnails">
     @foreach (var item in Model)
     {
         Html.RenderPartial("_ItemPreviewPartial", item);
     }
 </ul>
+}
+else
+{
+    <div class="lead">no results</div>
+}

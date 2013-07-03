@@ -59,7 +59,7 @@ namespace Raffle.Controllers
             if (ModelState.IsValid)
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { UnusedRaffles = 0 });
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { UnusedRaffles = 0, model.Country, model.Address });
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
@@ -220,7 +220,7 @@ namespace Raffle.Controllers
 
                     if (user == null)
                     {
-                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
+                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName, Country = model.Country, Address = model.Address });
                         db.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);

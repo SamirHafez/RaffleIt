@@ -3,7 +3,8 @@
     ViewBag.Title = Model.Name;
     var user = ((Raffle.Models.UserProfile)ViewBag.User);
     var hasBought = user.Raffles.Count(r => r.ItemId == Model.Id);
-    var rafflesLeft = Model.Price - Model.Raffles.Count;
+    var totalRaffles = Model.Price + (int)(Model.Price * 0.40);
+    var rafflesLeft = totalRaffles - Model.Raffles.Count;
     var isOwner = Model.OwnerId == user.UserId;
 }
 
@@ -16,15 +17,19 @@
 </h1>
 <h2 class="lead">@Model.Description</h2>
 <div class="row-fluid">
-    <div class="span2">
-        <ul class="thumbnails">
-            <li class="span2 tile">
-                <h1>@rafflesLeft</h1>
-                <h3>left</h3>
-            </li>
-        </ul>
-    </div>
-    <div class="span10 well">
+    @if (Model.CanBuy)
+    { 
+        <div class="span2">
+            <ul class="thumbnails">
+                <li class="span2 tile">
+                    <h1>@rafflesLeft</h1>
+                    <h3>left</h3>
+                </li>
+            </ul>
+        </div>
+    }
+    @{var span = Model.CanBuy ? "span10" : "span12";}
+    <div class="@span well">
         @if (isOwner)
         {
             if (Model.CanBuy)
@@ -36,29 +41,92 @@
             }
             else
             {
+                if (Model.ClosedAt + TimeSpan.FromSeconds(10) < DateTime.Now)
+                { 
             <h2>sold
                 <small>the winner has been selected</small>
             </h2>
-            <span class="lead">we sent you an email with the information of the winner to allow you to proceed with the shipping</span>
+                    if (Model.ShippedAt == null)
+                    { 
+            <span class="lead">now is time to ship the item. please ship it to:</span>
+            <address>
+                <strong>@Model.Raffles.First(r => r.IsPrized.Value).UserProfile.UserName</strong><br />
+                @Model.Raffles.First(r => r.IsPrized.Value).UserProfile.Address<br />
+                @Model.Raffles.First(r => r.IsPrized.Value).UserProfile.Country
+            </address>
+            @Html.ActionLink("i have shipped this item", "Shipped", new { id = Model.Id }, new { @class = "btn btn-primary btn-large pull-right" })
+                    }
+                    else
+                    {
+                        if (Model.ReceivedAt == null)
+                        {
+            <span class="lead">when the item winner reports it as delivered you will receive reputation points for the sell</span> 
+                        }
+                        else
+                        {
+            <span class="lead">the item winner has reported this item as delivered at <strong>@(Model.ReceivedAt)</strong>
+                <br />
+                you have been credited with <strong>2</strong> reputation points</span> 
+                        }
+                    }
+                }
+                else
+                {
+            <h2>please wait
+                        <small>selecting winner</small>
+            </h2> 
+            <div class="lead">the winner will be announced in <strong id="wait">@(((Model.ClosedAt.Value + TimeSpan.FromSeconds(10)) - DateTime.Now).Seconds)</strong> seconds</div>
+                }
             }
         }
         else
         {
             if (!Model.CanBuy)
             {
-                if (hasBought > 0 && user.Raffles.Any(r => r.ItemId == Model.Id && r.IsPrized == true))
+                if (Model.ClosedAt + TimeSpan.FromSeconds(10) < DateTime.Now)
                 {
+                    if (hasBought > 0 && user.Raffles.Any(r => r.ItemId == Model.Id && r.IsPrized == true))
+                    {
             <h2>congratulations
                 <small>you have won this item</small>
             </h2>
-            <span class="lead">we have already contacted the seller with your information regarding the shipping process</span>
-                }
-                else
-                {
+                        if (Model.ShippedAt == null)
+                        { 
+            <span class="lead">we have provided the seller with your shipping address. this page will update when the seller has shipped your item</span>
+                        }
+                        else
+                        {
+                            if (Model.ReceivedAt == null)
+                            { 
+            <div class="lead">
+                the seller has shipped your product at <strong>@(Model.ShippedAt)</strong>
+                <br />
+                if in <strong>30</strong> days you still haven't received your item yet, the seller will automatically lose <strong>4</strong> reputation points
+            </div>
+            <div>
+                @Html.ActionLink("i have received the item", "Received", new { id = Model.Id }, new { @class = "btn btn-primary btn-large" })
+            </div>
+                            }
+                            else
+                            {
+            <div class="lead">the item seller has been credited with <strong>2</strong> reputation points. thank you, and enjoy your product</div> 
+                            }
+                        }
+                    }
+                    else
+                    {
             <h2>sorry
                     <small>you did not win this item</small>
             </h2>
             <span class="lead">you can see the winning raffle below. better luck next time</span>
+                    }
+                }
+                else
+                {
+            <h2>please wait
+                        <small>selecting winner</small>
+            </h2> 
+            <div class="lead">the winner will be announced in <strong id="wait">@(((Model.ClosedAt.Value + TimeSpan.FromSeconds(10)) - DateTime.Now).Seconds)</strong> seconds</div>
                 }
             }
             else
@@ -69,9 +137,9 @@
                     <small>raffle purchased</small>
             </h2>
             <span class="lead">you have already purchased <strong>@hasBought</strong> @if (hasBought != 1)
-                                                                       {<span>raffles</span>}
-                                                                       else
-                                                                       {<span>raffle</span>}</span>
+                                                                                      {<span>raffles</span>}
+                                                                                      else
+                                                                                      {<span>raffle</span>}</span>
             @Html.ActionLink("buy another", "Purchase", new { id = Model.Id }, new { @class = "btn btn-primary btn-large pull-right" })
                 }
                 else
@@ -79,54 +147,71 @@
             <h2>buy raffle
                         <small>proceed to purchase a raffle</small>
             </h2>
-                    if (user.UnusedRaffles > 0) 
+                    if (user.UnusedRaffles > 0)
                     {
-                        @Html.ActionLink("buy", "Purchase", new { id = Model.Id }, new { @class = "btn btn-primary btn-large" })
+            <div class="lead">select available raffles from the list or click buy to purchase a random raffle</div>
+            @Html.ActionLink("buy", "Purchase", new { id = Model.Id }, new { @class = "btn btn-primary btn-large pull-right" })
                     }
                     else
                     {
-                        <div class="lead">
-                            you don't have enough raffles for this purchase
-                        </div>
+            <div class="lead">
+                you don't have any raffles
+                @Html.ActionLink("buy raffles", "Manage", "Account", null, new { @class = "btn btn-primary btn-large pull-right" })
+            </div>
                     }
                 }
             }
         }
     </div>
 </div>
-@if (Model.Raffles.Any())
-{
-    <h2>purchases
-        <small>raffles purchased for this item</small>
-    </h2> 
-    <ul class="thumbnails">
-        @foreach (Raffle.Models.Raffle raffle in Model.Raffles)
+
+<h2>raffles
+        <small>list of all the raffles for this item</small>
+</h2>
+<div class="row-fluid">
+    <div class="span8">
+        @foreach (var number in Enumerable.Range(1, totalRaffles))
         {
-            var state = raffle.IsPrized.GetValueOrDefault() ? "tile-teal" : string.Empty;
-            <li class="span2 tile @state">
-                <h1>@raffle.RaffleNumber</h1>
-                <h5>to @raffle.UserProfile.UserName</h5>
-            </li>
-    
+            var status = Model.Raffles.Any(r => r.RaffleNumber == number) ? string.Empty : "badge-info";
+            if (!isOwner && Model.Raffles.Any(r => r.RaffleNumber == number && r.UserProfileId == user.UserId))
+            {
+                status = "badge-success";
+            }
+            <span class="badge @status">@number</span>
         }
-    </ul>
-}
-else
-{
-    <div class="well">
-        <h3>purchases
-            <small>purchased raffles for this item will appear here</small>
-        </h3>
     </div>
-}
+
+    <div class="span3 pull-right">
+        <span class="badge">unavailable</span>
+        <span class="badge badge-info">available</span>
+        @if (!isOwner)
+        { 
+            <span class="badge badge-success">yours</span>
+        }
+    </div>
+</div>
 
 @if (((IList<Raffle.Models.Item>)ViewBag.Related).Count > 0)
 {
     <h3>related
         <small>items in the same category</small>
     </h3>
-    foreach (var item in (IList<Raffle.Models.Item>)@ViewBag.Related)
-    {
-        Html.RenderPartial("_ItemPreviewPartial", item);
-    }
+    <div class="row-fluid">
+        @foreach (var item in (IList<Raffle.Models.Item>)@ViewBag.Related)
+        {
+            Html.RenderPartial("_ItemPreviewPartial", item);
+        }
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    <script type="text/javascript">
+        var wait = parseInt($("#wait").text());
+
+        setInterval(function () {
+            if (wait === 0)
+                document.location.reload();
+            $("#wait").text(wait--);
+        }, 1000);
+    </script>
 }

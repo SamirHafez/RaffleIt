@@ -56,7 +56,7 @@ namespace Raffle.Controllers
 
                 Context.SaveChanges();
 
-                if (item.Raffles.Count == item.Price)
+                if (item.Raffles.Count == item.Price + (int)(item.Price * 0.40))
                 {
                     Raffle.Models.Raffle selectedRaffle = item.Raffles.OrderBy(r => Guid.NewGuid()).First();
                     IEnumerable<Raffle.Models.Raffle> otherRaffles = item.Raffles.Where(r => r.RaffleNumber != selectedRaffle.RaffleNumber);
@@ -69,6 +69,24 @@ namespace Raffle.Controllers
                     item.ClosedAt = DateTime.Now;
                 }
             }
+
+            return RedirectToAction("Index", new { id });
+        }
+
+        public async Task<ActionResult> Shipped(int id)
+        {
+            Item item = await Context.Items.FindAsync(id);
+
+            item.ShippedAt = DateTime.Now;
+
+            return RedirectToAction("Index", new { id });
+        }
+
+        public async Task<ActionResult> Received(int id)
+        {
+            Item item = await Context.Items.FindAsync(id);
+
+            item.ReceivedAt = DateTime.Now;
 
             return RedirectToAction("Index", new { id });
         }

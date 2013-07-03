@@ -31,7 +31,9 @@ namespace Raffle.Models
 
         public DateTime? ClosedAt { get; set; }
 
-        public bool? DeliveredSuccess { get; set; }
+        public DateTime? ShippedAt { get; set; }
+
+        public DateTime? ReceivedAt { get; set; }
 
         [ForeignKey("Owner")]
         public int OwnerId { get; set; }
@@ -48,7 +50,7 @@ namespace Raffle.Models
 
         public bool CanBuy
         {
-            get { return Raffles.Count != Price; }
+            get { return Raffles.Count != Price + (int)(Price * 0.40); }
         }
 
         public Item()

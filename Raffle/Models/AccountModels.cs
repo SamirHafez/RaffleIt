@@ -19,6 +19,13 @@ namespace Raffle.Models
         [Required(ErrorMessage = "*")]
         public string UserName { get; set; }
 
+        [Required(ErrorMessage = "*")]
+        public string Country { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [DataType(DataType.MultilineText)]
+        public string Address { get; set; }
+
         public int Reputation
         {
             get
@@ -31,9 +38,9 @@ namespace Raffle.Models
 
                 var intervalRaffles = user.Raffles.Count(r => now - r.PurchasedAt < sixMonths);
 
-                var intervalItems = user.Items.Where(r => r.DeliveredSuccess != null && r.ClosedAt != null && (now - r.ClosedAt < sixMonths));
-                var successItems = intervalItems.Count(r => r.DeliveredSuccess.GetValueOrDefault()) * 2;
-                var failedItems = intervalItems.Count(r => !r.DeliveredSuccess.GetValueOrDefault()) * 4;
+                var intervalItems = user.Items.Where(r => r.ReceivedAt != null && r.ClosedAt != null && (now - r.ClosedAt < sixMonths));
+                var successItems = intervalItems.Count(r => r.ReceivedAt != null) * 2;
+                var failedItems = intervalItems.Count(r => r.ReceivedAt == null && r.ShippedAt + TimeSpan.FromDays(30) < now) * 4;
 
                 return (intervalRaffles + successItems) - failedItems;
             }
@@ -57,6 +64,13 @@ namespace Raffle.Models
         [Required(ErrorMessage = "*")]
         [Display(Name = "User name")]
         public string UserName { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        public string Country { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [DataType(DataType.MultilineText)]
+        public string Address { get; set; }
 
         public string ExternalLoginData { get; set; }
     }
@@ -111,6 +125,13 @@ namespace Raffle.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        public string Country { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [DataType(DataType.MultilineText)]
+        public string Address { get; set; }
     }
 
     public class ExternalLogin
